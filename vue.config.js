@@ -6,7 +6,7 @@ const tsImportPluginFactory = require('ts-import-plugin')
 module.exports = {
   parallel: false,
   // outputDir: '../docs',
-  // publicPath: process.env.NODE_ENV === 'production' ? '/vant-demo/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/trial-student/' : '/',
   chainWebpack: config => {
     config.module
       .rule('ts')
