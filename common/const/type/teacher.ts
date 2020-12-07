@@ -1,4 +1,4 @@
-import * as enums from '../enum';
+import * as enums from '../enum'
 export interface ITeacher {
   readonly _id?: string;
   name: string;

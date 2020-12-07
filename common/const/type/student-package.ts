@@ -14,7 +14,6 @@ export interface IStudentPackage {
   period: number;
 }
 
-
 export interface ICaculatePackage {
   _id: string;
   amount: number;

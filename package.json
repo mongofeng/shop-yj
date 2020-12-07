@@ -2,6 +2,9 @@
   "name": "root",
   "private": true,
   "workspaces": ["packages/*"],
+  "scripts": {
+    "lint-fix": "eslint --fix --ext .ts  --ext .vue common/ "
+  },
   "devDependencies": {
     "lerna": "^3.22.1"
   }

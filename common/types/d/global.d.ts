@@ -4,7 +4,6 @@ declare interface ILabelVal<T= string> {
     value: T;
 }
 
-
 // declare type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 
 /**

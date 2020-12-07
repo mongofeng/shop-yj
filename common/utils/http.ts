@@ -1,8 +1,7 @@
 
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-
-export const accessTokenName = 'Authorization';
+export const accessTokenName = 'Authorization'
 
 // const codeMessage = {
 //   200: '服务器成功返回请求的数据。',
@@ -25,34 +24,33 @@ export const accessTokenName = 'Authorization';
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_SERVER,
   headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
-  },
-});
-
+    'Content-Type': 'application/json; charset=UTF-8'
+  }
+})
 
 http.interceptors.response.use(
   (response: AxiosResponse) => {
-    return response;
+    return response
   },
   (error: AxiosError) => {
-    return Promise.reject(error);
-  },
-);
+    return Promise.reject(error)
+  }
+)
 
 http.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     const localStorageAccessTokenName = window.localStorage.getItem(
-      accessTokenName,
-    );
+      accessTokenName
+    )
     if (localStorageAccessTokenName) {
-      config.headers[accessTokenName] = localStorageAccessTokenName;
+      config.headers[accessTokenName] = localStorageAccessTokenName
     }
 
-    return config;
+    return config
   },
   (error: AxiosError) => {
-    return Promise.reject(error);
-  },
-);
+    return Promise.reject(error)
+  }
+)
 
-export default http;
+export default http

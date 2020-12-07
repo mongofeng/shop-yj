@@ -1,9 +1,9 @@
-import * as enums from '../enum';
-import {ICourse} from './student-operation';
+import * as enums from '../enum'
+import { ICourse } from './student-operation'
 
 export interface IHour {
   readonly _id?: string;
-  num: number;  // 课时的数量
+  num: number; // 课时的数量
   course: ICourse[]; // 课程,补签或者签到时候存在[{courseId, count}]
   packageId?: string; // 课程包id
   studentPackageId?: string; // 学员课程包id

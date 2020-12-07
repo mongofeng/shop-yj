@@ -1,4 +1,4 @@
-import * as enums from '../enum';
+import * as enums from '../enum'
 export interface IStudent {
   _id: string;
   name: string;
@@ -20,17 +20,15 @@ export interface IStudent {
   updateDate?: string;
 }
 
-
 export interface IStuCountByTime {
   readonly _id: string;
   students: Array<{
     teacherId: string;
-    name: string,
-    id: string
+    name: string;
+    id: string;
   }>;
   count: number;
 }
-
 
 export interface IStuCountByStatus {
   readonly _id: string;

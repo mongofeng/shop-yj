@@ -20,7 +20,6 @@ export interface ISign {
 
 export type ISupplement = Omit<ISign, 'courseName'>;
 
-
 export interface ISharePackage {
   packId: string;
   studentId: string;
