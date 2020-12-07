@@ -1,9 +1,10 @@
 // TODO: 应用管理Vuex相关逻辑，待移除
-import * as api from '@/api/wechat';
-import * as apiStu from '@/api/student';
-import * as type from '@/const/type/student';
+import * as api from '@root/common/api/wechat';
+import * as apiStu from '@root/common/api/student';
+import * as type from '@root/common/const/type/student';
 import { ActionContext } from 'vuex';
-import { accessTokenName } from '@/utils/http';
+import { query2Obj, getQuery} from '@root/common/utils/url'
+import { accessTokenName } from '@root/common/utils/http';
 
 const ADD_OPENID = 'ADD_OPENID';
 export const ADD_USERID = 'ADD_USERID';
@@ -52,22 +53,17 @@ const getters = {
 // actions
 const actions = {
   async fetchOpenId({ commit }: ActionContext<IState, any>) {
-    if (!/code=([^&]+)/.test(location.search) || !RegExp.$1) {
+
+    const obj = query2Obj(getQuery());
+
+    
+    const code = obj.code
+
+    if (!code) {
       console.error('当前没有code，不执行获取openid接口');
       // alert('当前没有code，不执行获取openid接口');
       return;
     }
-    const code = RegExp.$1;
-    // let { data } = await api.fetchOpenId({
-    //   code,
-    // });
-
-    // if ((data  as any).data) {
-    //   data = (data  as any).data;
-    // }
-
-    // localStorage.setItem('openid', data.openid);
-    // localStorage.setItem('wechat', JSON.stringify(data));
 
 
 
@@ -100,22 +96,6 @@ const actions = {
       console.error('必须要有openid才可以获取userId');
       return;
     }
-
-    // if (!state.token) {
-    //   const {data: {
-    //     data,
-    //   }} = await api.openIdLogin({
-    //     openId: state.openid,
-    //   });
-    //   console.log(data);
-    //   window.localStorage.setItem(
-    //     accessTokenName,
-    //     data.token,
-    //   );
-
-    //   commit(ADD_TOKEN, localStorage.getItem(accessTokenName));
-    // }
-
 
 
 
