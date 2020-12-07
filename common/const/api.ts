@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios';
+import { AxiosPromise } from 'axios'
 
 export interface IResponse<T = any> {
   data: T;
@@ -26,7 +26,6 @@ export type ApiListData<T> = ApiResponse<{
  */
 export type IApiList<T> = (params: any) => ApiListData<T>;
 
-
 /**
  * 更新表单的函数
  */
@@ -37,7 +36,6 @@ export type AddFunc<P> =
 (params: P) => ApiResponse<any>;
 
 export type FormFun<P> = UpdateFunc<P> | AddFunc<P>;
-
 
 /**
  * 获取详情

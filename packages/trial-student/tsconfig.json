@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "typeRoots": [
-      "../../common/types"
+      "../../common/types/d"
     ],
     "baseUrl": ".",
     "types": [
