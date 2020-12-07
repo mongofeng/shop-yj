@@ -21,8 +21,8 @@ export interface Istate {
 
 // initial state
 const state: Istate = {
-  openid: localStorage.getItem('openid') || '',
-  userid: '',
+  openid: localStorage.getItem('openid') || '222',
+  userid: '333',
   userList: [],
   token: ''
 }
@@ -103,7 +103,7 @@ const actions = {
       return
     }
 
-    commit(ADD_USER_MESSAGE_LIST, list)
+    commit(ADD_USER_MESSAGE_LIST, list) // 绑定多个学yuanyuan情况
     const [first] = list
     if (!first) { return }
     if (!state.userid) {
