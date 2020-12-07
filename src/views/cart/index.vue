@@ -18,7 +18,7 @@
     </van-checkbox-group>
     <van-submit-bar
       :price="totalPrice"
-      :disabled="!checkedGoods.length"
+      :disabled="!checkedGoods || !checkedGoods.length"
       :button-text="submitBarText"
       @submit="onSubmit"
     />
@@ -27,7 +27,7 @@
 
 <script>
 import { Checkbox, CheckboxGroup, Card, SubmitBar, Toast } from 'vant'
-import { computed, defineComponent, reactive, toRef } from 'vue'
+import { computed, defineComponent, reactive, toRefs } from 'vue'
 
 export default defineComponent({
   name: 'Cart',
@@ -83,8 +83,10 @@ export default defineComponent({
       Toast('点击结算')
     }
 
+    const resData = toRefs(data)
+
     return {
-      ...toRef(data),
+      ...resData,
       formatPrice,
       onSubmit,
       totalPrice,
