@@ -3,25 +3,25 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: 'goods',
+    redirect: '/good'
   },
   {
-    path: 'user',
-    component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
+    path: '/user',
+    component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue'),
     meta: {
       title: '会员中心'
     }
   },
   {
-    path: 'cart',
-    component: () => import(/* webpackChunkName: "cart" */  '../views/cart.vue'),
+    path: '/cart',
+    component: () => import(/* webpackChunkName: "cart" */ '@/views/cart/index.vue'),
     meta: {
       title: '购物车'
     }
   },
   {
-    path: 'goods',
-    component: () => import(/* webpackChunkName: "goods" */ '../views/goods.vue'),
+    path: '/good',
+    component: () => import(/* webpackChunkName: "goods" */ '@/views/good/index.vue'),
     meta: {
       title: '商品详情'
     }
