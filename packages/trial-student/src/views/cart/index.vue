@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Checkbox, CheckboxGroup, Card, SubmitBar, Toast } from 'vant'
 import { computed, defineComponent, reactive, toRefs } from 'vue'
 
@@ -75,7 +75,7 @@ export default defineComponent({
 
     const totalPrice = computed(() => data.goods.reduce((total, item) => total + (data.checkedGoods.indexOf(item.id) !== -1 ? item.price : 0), 0))
 
-    function formatPrice (price) {
+    function formatPrice (price: number) {
       return (price / 100).toFixed(2)
     }
 
