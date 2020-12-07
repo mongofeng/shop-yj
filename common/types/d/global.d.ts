@@ -22,7 +22,7 @@ type QueryValue = Record<CompareType1, number | string> &
 Record<CompareType2, string | number> &
 Record<CompareType3, number[] | string[]>;
 
-declare interface QueryCondition<T> {
+export interface QueryCondition<T> {
   filter?: Array<keyof T>;
   page?: number;
   limit?: number;

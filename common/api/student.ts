@@ -1,6 +1,7 @@
 import { IStudent } from '../const/type/student'
 import { ApiListData, ApiResponse } from '../const/api'
 import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
 
 /**
  * 添加学生
