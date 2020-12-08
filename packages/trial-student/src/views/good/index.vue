@@ -81,7 +81,7 @@ export default defineComponent({
     [SwipeItem.name]: SwipeItem,
     [Button.name]: Button
   },
-  setup (props) {
+  setup () {
     const router = useRouter()
     const route = useRoute()
 
@@ -128,7 +128,7 @@ export default defineComponent({
     )
 
     function buy () {
-
+      console.log(1)
     }
 
     return { goods, formatPrice, sorry, onClickCart, loading, buy } // 这里返回的任何内容都可以用于组件的其余部分
