@@ -25,7 +25,8 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/good',
+    path: '/good/:id',
+    name: 'Good',
     component: () => import(/* webpackChunkName: "goods" */ '@/views/good/index.vue'),
     meta: {
       title: '商品详情'

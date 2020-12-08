@@ -60,7 +60,7 @@ import {
   Toast,
   SwipeItem
 } from 'vant'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 export default defineComponent({
   name: 'Good',
   components: {
@@ -74,6 +74,7 @@ export default defineComponent({
   },
   setup (props) {
     const router = useRouter()
+    const route = useRoute()
     const goods = reactive({
       title: '美国伽力果（约680g/3个）',
       price: 2680,
