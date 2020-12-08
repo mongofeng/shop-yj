@@ -27,7 +27,7 @@ import { defineComponent, reactive, ref, toRefs } from 'vue'
 import { Button, Form, Field, Toast } from 'vant'
 import * as api from '@root/common/api/trial-student'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 export default defineComponent({
   name: 'Form',
 
@@ -40,6 +40,8 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const router = useRouter()
+
+    const route = useRoute()
 
     const loading = ref(false)
 
@@ -67,13 +69,22 @@ export default defineComponent({
       }
       loading.value = true
       try {
-        const res = await api.addStudent({
+        const { data: { data } } = await api.addStudent({
           ...values,
           openId: store.state.oauth.openid
         })
         loading.value = false
-        router.back()
-        console.log(res)
+        if (route.query && route.query.routeName === 'Pay') {
+          router.push({
+            name: 'Pay',
+            query: {
+              orderId: route.query.orderId,
+              studentId: data._id
+            }
+          })
+        } else {
+          router.back()
+        }
       } catch (error) {
         loading.value = false
       }

@@ -95,6 +95,7 @@ export default defineComponent({
       price: 0,
       count: 0,
       period: 1,
+      id: '',
       thumb: [
         'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
         'https://img.yzcdn.cn/public_files/2017/10/24/1791ba14088f9c2be8c610d0a6cc0f93.jpeg'
@@ -123,6 +124,7 @@ export default defineComponent({
           goods.price = data.priceAmount || data.amount
           goods.count = data.count
           goods.period = data.period
+          goods.id = newParams.id
         }
       },
       {
@@ -130,15 +132,44 @@ export default defineComponent({
       }
     )
 
-    function buy () {
+    async function buy () {
       if (!store.state.oauth.openid) {
         Toast('没有openid')
         return
       }
 
-      // trial.getStudentList()
+      try {
+        const { data: { data: { list } } } = await trial.getStudentList({
+          page: 1,
+          limit: 50,
+          query: {
+            openId: store.state.oauth.openid
+          }
+        })
 
-      console.log(1)
+        if (list && list.length) { // 去购买
+        // 购买的逻辑
+          router.push({
+            name: 'Pay',
+            query: {
+              orderId: goods.id,
+              studentId: list[0].id
+            }
+          })
+        } else {
+          router.push(
+            {
+              name: 'Form',
+              query: {
+                orderId: goods.id,
+                routeName: 'Pay'
+              }
+            }
+          )
+        }
+      } catch (error) {
+        Toast('查询学生信息出错')
+      }
     }
 
     return { goods, formatPrice, sorry, onClickCart, loading, buy } // 这里返回的任何内容都可以用于组件的其余部分
