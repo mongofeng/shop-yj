@@ -1,9 +1,14 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import Auth from '@/views/auth/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/good'
+    redirect: '/auth'
+  },
+  {
+    path: '/auth',
+    component: Auth
   },
   {
     path: '/user',

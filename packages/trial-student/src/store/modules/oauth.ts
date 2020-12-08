@@ -21,8 +21,8 @@ export interface Istate {
 
 // initial state
 const state: Istate = {
-  openid: localStorage.getItem('openid') || '222',
-  userid: '333',
+  openid: localStorage.getItem('openid') || '',
+  userid: '',
   userList: [],
   token: ''
 }
@@ -60,7 +60,7 @@ const actions = {
     if (!code) {
       console.error('当前没有code，不执行获取openid接口')
       // alert('当前没有code，不执行获取openid接口');
-      return
+      return false
     }
 
     const {
@@ -83,6 +83,7 @@ const actions = {
     commit(ADD_OPENID, data.openid)
 
     localStorage.setItem('openid', data.openid)
+    return true
   },
 
   async fetchUserId ({ commit, state }: ActionContext<Istate, any>) {
