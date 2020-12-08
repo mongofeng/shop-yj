@@ -1,13 +1,12 @@
 <template>
   <div>
-    11111
     <van-loading size="24px" vertical v-if="loading">加载中...</van-loading>
     <Message type="error" :msg="info" v-if="showError"></Message>
   </div>
 
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { Loading } from 'vant'
 import { useRouter } from 'vue-router'
@@ -18,7 +17,7 @@ export default defineComponent({
     [Loading.name]: Loading
   },
 
-  async setup () {
+  setup () {
     const store = useStore()
     const router = useRouter()
 
@@ -26,22 +25,23 @@ export default defineComponent({
     const loading = ref(true)
     const info = ref('')
 
-    console.log(store.state.oauth.openid)
-    try {
-      const ret = await store.dispatch('oauth/fetchOpenId')
-      loading.value = false
-      console.log(ret)
-      if (ret) { // 跳转
-        router.replace('good')
-      } else {
+    onMounted(async () => {
+      try {
+        const ret = await store.dispatch('oauth/fetchOpenId')
+        loading.value = false
+        console.log(ret)
+        if (ret) { // 跳转
+          router.replace('good')
+        } else {
+          showError.value = true
+          info.value = '当前没有code,请在微信中打开'
+        }
+      } catch (err) {
+        loading.value = false
         showError.value = true
-        info.value = '当前没有code,请在微信中打开'
+        info.value = '接口出错,请稍后重试'
       }
-    } catch (err) {
-      loading.value = false
-      showError.value = true
-      info.value = '接口出错,请稍后重试'
-    }
+    })
 
     return { showError, loading, info }
   }

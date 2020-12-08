@@ -47,7 +47,7 @@ export default defineComponent({
 <style scoped lang="scss">
 h2 {
   color: #575757;
-  font-size: 30px;
+  font-size: 16px;
   text-align: center;
   font-weight: 600;
   text-transform: none;

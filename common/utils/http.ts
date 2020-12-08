@@ -21,6 +21,8 @@ export const accessTokenName = 'Authorization'
 //   504: '网关超时。',
 // };
 
+console.log(process.env.VUE_APP_API_SERVER)
+
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_SERVER,
   headers: {

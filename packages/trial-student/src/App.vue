@@ -3,14 +3,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Main',
 
   setup () {
-    const store = useStore()
-    console.log(store.state.oauth.openid)
     return { }
   }
 })
