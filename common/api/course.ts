@@ -1,6 +1,7 @@
 import { ICourse } from '../const/type/course'
 import { ApiListData, ApiResponse } from '../const/api'
 import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
 
 /**
  * 添加课程

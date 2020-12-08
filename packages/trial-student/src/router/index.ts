@@ -30,6 +30,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '商品详情'
     }
+  },
+  {
+    path: '/form',
+    component: () => import(/* webpackChunkName: "form" */ '@/views/form/index.vue')
   }
 ]
 

@@ -1,4 +1,5 @@
 import * as enums from '../enum'
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface ICourse {
   readonly _id?: string;
   name: string;
