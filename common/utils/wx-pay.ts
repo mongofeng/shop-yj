@@ -1,5 +1,6 @@
+declare const WeixinJSBridge: any
 
-export function wxPay (payResponse) {
+export function wxPay (payResponse: any) {
   function onBridgeReady () {
     console.log('进行支付')
     WeixinJSBridge.invoke(

@@ -31,6 +31,12 @@
       <van-cell title="查看商品详情" is-link @click="sorry" />
     </van-cell-group>
 
+    <div style="margin: 16px">
+      <van-button round block type="primary"  :disabled="loading" @click="buy">
+        购买
+      </van-button>
+    </div>
+
     <!-- <van-goods-action>
       <van-goods-action-icon icon="chat-o" @click="sorry">
         客服
@@ -49,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, watch } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import {
   Tag,
   Col,
@@ -58,7 +64,8 @@ import {
   CellGroup,
   Swipe,
   Toast,
-  SwipeItem
+  SwipeItem,
+  Button
 } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
 import * as api from '@root/common/api/package'
@@ -71,11 +78,14 @@ export default defineComponent({
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
     [Swipe.name]: Swipe,
-    [SwipeItem.name]: SwipeItem
+    [SwipeItem.name]: SwipeItem,
+    [Button.name]: Button
   },
   setup (props) {
     const router = useRouter()
     const route = useRoute()
+
+    const loading = ref(false)
 
     const goods = reactive({
       name: '课时包',
@@ -117,7 +127,11 @@ export default defineComponent({
       }
     )
 
-    return { goods, formatPrice, sorry, onClickCart } // 这里返回的任何内容都可以用于组件的其余部分
+    function buy () {
+
+    }
+
+    return { goods, formatPrice, sorry, onClickCart, loading, buy } // 这里返回的任何内容都可以用于组件的其余部分
   }
 })
 </script>
