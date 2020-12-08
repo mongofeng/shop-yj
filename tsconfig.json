@@ -17,8 +17,11 @@
     "paths": {
       "@root/*": ["./*"]
     },
+    "typeRoots": [
+      "./common/types"
+    ],
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "exclude": ["node_modules"],
-  "include": ["common", "packages", "types"]
+  "include": ["common", "packages"]
 }

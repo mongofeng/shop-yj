@@ -30,3 +30,7 @@ export interface QueryCondition<T> {
   sort?: Partial<Record<keyof T, 'asc' | 'desc' | 1 | -1>>;
   like?: Partial<Record<keyof T, string>>;
 }
+
+declare global {
+  interface Window { WeixinJSBridge: any }
+}
