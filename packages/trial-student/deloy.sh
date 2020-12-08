@@ -29,6 +29,22 @@ target=${deloy_server}:${deloy_root_path}
 echo "拷贝文件夹到目录下:${target}"
 scp -i ~/.ssh/pk_rsa.pem -r dist ${target}
 
+dir=${deloy_root_path}${deloy_path}
+temp=${deloy_root_path}${build_path}
+ssh -i ~/.ssh/pk_rsa.pem -Tq $deloy_server <<  remotessh
+  echo 判断文件夹已经是否存在$dir
+  echo $temp
+
+  if [ ! -d $dir ];then
+    mv $temp ${dir}
+  else
+    echo "文件夹已经存在, 删除目标文件夹:$dir下的所有文件"
+    rm -rf $dir
+    mv $temp ${dir}
+  fi
+exit
+
+remotessh
 
 
 echo 部署成功
