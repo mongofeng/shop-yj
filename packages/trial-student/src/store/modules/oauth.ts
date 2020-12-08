@@ -6,22 +6,26 @@ import { ActionContext } from 'vuex'
 import { query2Obj, getQuery } from '@root/common/utils/url'
 import { accessTokenName } from '@root/common/utils/http'
 
-const ADD_OPENID = 'ADD_OPENID'
-export const ADD_USERID = 'ADD_USERID'
+const ADD_OPENID = 'ADD_OPENID' // 添加openid
+export const ADD_USERID = 'ADD_USERID' // 添加用户id
 
-const ADD_USER_MESSAGE_LIST = 'ADD_USER_MESSAGE_LIST'
+const ADD_USER_MESSAGE_LIST = 'ADD_USER_MESSAGE_LIST' // 添加学生列表相关联的
 
-const ADD_TOKEN = 'ADD_TOKEN'
+const ADD_TOKEN = 'ADD_TOKEN' // 添加token
+
+const ADD_STUDENT_TYPE = 'ADD_STUDENT_TYPE' // 添加是否为试用状态
 export interface Istate {
   openid: string;
   userid: string;
   userList: type.IStudent[];
   token: string;
+  isTrial: boolean;
 }
 
 // initial state
 const state: Istate = {
   openid: localStorage.getItem('openid') || '',
+  isTrial: false,
   userid: '',
   userList: [],
   token: ''
@@ -99,10 +103,15 @@ const actions = {
         openId: state.openid
       }
     })
+
+    // 判断是否正式的学生
     if (!list || !list.length) {
       console.warn('当前openid没有绑定')
+      commit(ADD_STUDENT_TYPE, true)
       return
     }
+
+    commit(ADD_STUDENT_TYPE, false)
 
     commit(ADD_USER_MESSAGE_LIST, list) // 绑定多个学yuanyuan情况
     const [first] = list
@@ -137,6 +146,9 @@ const mutations = {
   },
   [ADD_TOKEN] (state: Istate, s: string) {
     state.token = s
+  },
+  [ADD_STUDENT_TYPE] (state: Istate, s: boolean) {
+    state.isTrial = s
   }
 }
 

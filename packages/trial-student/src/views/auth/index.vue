@@ -30,6 +30,8 @@ export default defineComponent({
         const ret = await store.dispatch('oauth/fetchOpenId')
         loading.value = false
         console.log(ret)
+        await store.dispatch('oauth/fetchUserId')
+        console.log(store.state.oauth)
         if (ret) { // 跳转
           router.replace('good')
         } else {
