@@ -8,7 +8,7 @@ module.exports = {
   parallel: false,
 
   publicPath: process.env.VUE_APP_BASE_URL,
-  // outputDir: 'wechat',
+  // outputDir: 'trial-student',
   productionSourceMap: false,
 
   devServer: {
