@@ -33,7 +33,9 @@ export default defineComponent({
         await store.dispatch('oauth/fetchUserId')
         console.log(store.state.oauth)
         if (ret) { // 跳转
-          router.replace('good')
+          router.replace({
+            name: 'Shop'
+          })
         } else {
           showError.value = true
           info.value = '当前没有code,请在微信中打开'
