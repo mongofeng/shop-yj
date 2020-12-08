@@ -69,6 +69,8 @@ import {
 } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
 import * as api from '@root/common/api/package'
+import * as trial from '@root/common/api/trial-student'
+import { useStore } from 'vuex'
 export default defineComponent({
   name: 'Good',
   components: {
@@ -84,6 +86,7 @@ export default defineComponent({
   setup () {
     const router = useRouter()
     const route = useRoute()
+    const store = useStore()
 
     const loading = ref(false)
 
@@ -128,6 +131,13 @@ export default defineComponent({
     )
 
     function buy () {
+      if (!store.state.oauth.openid) {
+        Toast('没有openid')
+        return
+      }
+
+      // trial.getStudentList()
+
       console.log(1)
     }
 
