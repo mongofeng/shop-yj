@@ -8,12 +8,12 @@
 
     <van-cell-group>
       <van-cell>
-        <div class="goods-title">{{ goods.title }}</div>
+        <div class="goods-title">{{ goods.name }}</div>
         <div class="goods-price">{{ formatPrice(goods.price) }}</div>
       </van-cell>
       <van-cell class="goods-express">
-        <van-col span="10">运费：{{ goods.express }}</van-col>
-        <van-col span="14">剩余：{{ goods.remain }}</van-col>
+        <van-col span="10">课时：{{ goods.count }}</van-col>
+        <van-col span="14">课时有效期：{{ goods.period }}年</van-col>
       </van-cell>
     </van-cell-group>
 
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, watch } from 'vue'
 import {
   Tag,
   Col,
@@ -61,6 +61,7 @@ import {
   SwipeItem
 } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
+import * as api from '@root/common/api/package'
 export default defineComponent({
   name: 'Good',
   components: {
@@ -75,11 +76,12 @@ export default defineComponent({
   setup (props) {
     const router = useRouter()
     const route = useRoute()
+
     const goods = reactive({
-      title: '美国伽力果（约680g/3个）',
-      price: 2680,
-      express: '免运费',
-      remain: 19,
+      name: '课时包',
+      price: 0,
+      count: 0,
+      period: 1,
       thumb: [
         'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
         'https://img.yzcdn.cn/public_files/2017/10/24/1791ba14088f9c2be8c610d0a6cc0f93.jpeg'
@@ -87,7 +89,7 @@ export default defineComponent({
     })
 
     const formatPrice = () => {
-      return '¥' + (goods.price / 100).toFixed(2)
+      return '¥' + goods.price
     }
 
     const sorry = () => {
@@ -97,6 +99,23 @@ export default defineComponent({
     const onClickCart = () => {
       router.push('cart')
     }
+
+    // fetch the user information when params change
+    watch(
+      () => route.params,
+      async (newParams) => {
+        if (typeof newParams.id === 'string') {
+          const { data: { data } } = await api.getPackage(newParams.id)
+          goods.name = data.name
+          goods.price = data.priceAmount || data.amount
+          goods.count = data.count
+          goods.period = data.period
+        }
+      },
+      {
+        immediate: true
+      }
+    )
 
     return { goods, formatPrice, sorry, onClickCart } // 这里返回的任何内容都可以用于组件的其余部分
   }
