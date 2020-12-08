@@ -34,6 +34,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/form',
     component: () => import(/* webpackChunkName: "form" */ '@/views/form/index.vue')
+  },
+  {
+    path: '/shop',
+    component: () => import(/* webpackChunkName: "shop" */ '@/views/shop/index.vue')
   }
 ]
 
