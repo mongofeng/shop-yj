@@ -138,7 +138,13 @@ export default defineComponent({
         return
       }
 
+      if (!store.state.oauth.isTrial) {
+        Toast('不好意思，查询到微信正式学员，暂时没法购买，请联系管理员')
+        return
+      }
+
       try {
+        // 查询是否已经登记了正式学员的身份
         const { data: { data: { list } } } = await trial.getStudentList({
           page: 1,
           limit: 50,
@@ -153,6 +159,8 @@ export default defineComponent({
             name: 'Pay',
             query: {
               orderId: goods.id,
+              price: goods.price,
+              name: goods.name,
               studentId: list[0].id
             }
           })
@@ -162,6 +170,8 @@ export default defineComponent({
               name: 'Form',
               query: {
                 orderId: goods.id,
+                price: goods.price,
+                name: goods.name,
                 routeName: 'Pay'
               }
             }

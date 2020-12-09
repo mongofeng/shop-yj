@@ -78,7 +78,7 @@ export default defineComponent({
           router.push({
             name: 'Pay',
             query: {
-              orderId: route.query.orderId,
+              ...route.query,
               studentId: data._id
             }
           })
