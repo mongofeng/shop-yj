@@ -20,14 +20,14 @@ const routes: Array<RouteRecordRaw> = [
       title: '会员中心'
     }
   },
-  {
-    path: '/cart',
-    name: 'Cart',
-    component: () => import(/* webpackChunkName: "cart" */ '@/views/cart/index.vue'),
-    meta: {
-      title: '购物车'
-    }
-  },
+  // {
+  //   path: '/cart',
+  //   name: 'Cart',
+  //   component: () => import(/* webpackChunkName: "cart" */ '@/views/cart/index.vue'),
+  //   meta: {
+  //     title: '购物车'
+  //   }
+  // },
   {
     path: '/good/:id',
     name: 'Good',
