@@ -75,7 +75,7 @@ export default defineComponent({
         })
         loading.value = false
         if (route.query && route.query.routeName === 'Pay') {
-          router.push({
+          router.replace({
             name: 'Pay',
             query: {
               ...route.query,
