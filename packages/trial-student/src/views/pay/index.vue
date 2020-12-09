@@ -3,13 +3,13 @@
     <div class="weui-form-preview__hd">
       <div class="weui-form-preview__item">
         <label class="weui-form-preview__label">付款金额</label>
-        <em class="weui-form-preview__value">¥2400.00</em>
+        <em class="weui-form-preview__value">¥{{price}}</em>
       </div>
     </div>
     <div class="weui-form-preview__bd">
       <div class="weui-form-preview__item">
         <label class="weui-form-preview__label">商品</label>
-        <span class="weui-form-preview__value">电动打蛋机</span>
+        <span class="weui-form-preview__value">{{name}}</span>
       </div>
     </div>
     <div class="weui-form-preview__ft">
@@ -37,6 +37,9 @@ export default defineComponent({
     const store = useStore()
 
     const loading = ref(false)
+
+    const price = ref(route.query.price)
+    const name = ref(route.query.name)
 
     const payRequest = reactive({
       appId: '', // 公众号名称，由商户传入
@@ -129,7 +132,7 @@ export default defineComponent({
         loading.value = false
       }
     }
-    return { toPay, ...toRefs(payRequest), loading }
+    return { toPay, ...toRefs(payRequest), loading, price, name }
   }
 })
 </script>
