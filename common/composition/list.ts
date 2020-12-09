@@ -33,9 +33,9 @@ export function compositionList (func: any) {
     }
   }
 
-  onMounted(() => {
-    fetchData()
-  })
+  // onMounted(() => {
+  //   fetchData()
+  // })
 
   function loadList () {
     if (data.list.length >= data.count) {
