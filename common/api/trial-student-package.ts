@@ -7,7 +7,7 @@ import { QueryCondition } from '../types/d/global'
  * 添加学生
  * @param {*} params
  */
-export function addStudentPackage (params: Partial<TrialStudentPackage>) {
+export function addTrialStudentPackage (params: Partial<TrialStudentPackage>) {
   return http.post('trial-student-package', params)
 }
 
@@ -15,7 +15,7 @@ export function addStudentPackage (params: Partial<TrialStudentPackage>) {
  *
  * @param params 查询参数
  */
-export function getStudentPackageList (params: QueryCondition<TrialStudentPackage>): ApiListData<TrialStudentPackage> {
+export function getTrialStudentPackageList (params: QueryCondition<TrialStudentPackage>): ApiListData<TrialStudentPackage> {
   return http.post('trial-student-package/list', params)
 }
 
@@ -23,7 +23,7 @@ export function getStudentPackageList (params: QueryCondition<TrialStudentPackag
  *
  * @param id 学生的id
  */
-export function getStudentPackage (id: string): ApiResponse<TrialStudentPackage> {
+export function getTrialStudentPackage (id: string): ApiResponse<TrialStudentPackage> {
   return http.get(`trial-student-package/${id}`)
 }
 
@@ -32,6 +32,6 @@ export function getStudentPackage (id: string): ApiResponse<TrialStudentPackage>
  * @param id 学生id
  * @param params
  */
-export function updateStudentPackage (id: string, params: Partial<TrialStudentPackage>): ApiResponse<TrialStudentPackage> {
+export function updateTrialStudentPackage (id: string, params: Partial<TrialStudentPackage>): ApiResponse<TrialStudentPackage> {
   return http.put(`trial-student-package/${id}`, params)
 }

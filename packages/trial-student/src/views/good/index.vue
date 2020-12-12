@@ -64,7 +64,7 @@ import { useRoute, useRouter } from 'vue-router'
 import * as api from '@root/common/api/package'
 import * as trial from '@root/common/api/trial-student'
 import { useStore } from 'vuex'
-import { getStudentPackageList } from '@root/common/api/student-package'
+import { getTrialStudentPackageList } from '@root/common/api/trial-student-package'
 import wx from 'wx-jdk'
 import { jsTicket } from '@root/common/api/wechat'
 export default defineComponent({
@@ -209,7 +209,7 @@ export default defineComponent({
             data: {
               data: { list: packages }
             }
-          } = await getStudentPackageList({
+          } = await getTrialStudentPackageList({
             page: 1,
             limit: 50,
             query: {
