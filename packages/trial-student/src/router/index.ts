@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Auth from '@/views/auth/index.vue'
+import BottomBar from '@/components/bottom-bar.vue'
 import Pay from '@/views/pay/index.vue'
+import User from '@/views/user/index.vue'
+import Shop from '@/views/shop/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,7 +18,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/user',
     name: 'User',
-    component: () => import(/* webpackChunkName: "user" */ '@/views/user/index.vue'),
+    components: {
+      default: User,
+      bar: BottomBar
+    },
     meta: {
       title: '会员中心'
     }
@@ -44,7 +50,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/shop',
     name: 'Shop',
-    component: () => import(/* webpackChunkName: "shop" */ '@/views/shop/index.vue')
+    components: {
+      default: Shop,
+      bar: BottomBar
+    }
   },
   {
     path: '/pay',
