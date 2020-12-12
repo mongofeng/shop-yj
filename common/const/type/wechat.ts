@@ -11,6 +11,16 @@ export interface IInfo {
   openid: string;
 }
 
+export interface JsSdkDto {
+   appId: string;
+
+   timestamp: string;
+
+   nonceStr: string;
+
+   signature: string;
+}
+
 export interface IUserInfo {
   // "subscribe": 1
   //   "openid": "oVB5OwyVDKfTZq4T61_p2roSg1tA",

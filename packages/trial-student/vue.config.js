@@ -44,6 +44,23 @@ module.exports = {
     }
   },
 
+  configureWebpack: (config) => {
+    Object.assign(config, {
+      externals: {
+        // 包名： 全局变量
+        'wx-jdk': 'wx'
+      }
+    })
+
+    if (process.env.NODE_ENV === 'production') {
+      // 干掉console.log:https://juejin.im/post/5c84b709e51d4578ca71dde4#heading-0
+      config.optimization.minimizer[0].options.terserOptions.compress.warnings = false
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_debugger = true
+      config.optimization.minimizer[0].options.terserOptions.compress.pure_funcs = ['console.log']
+    }
+  },
+
   chainWebpack: config => {
     config.resolve.alias.set('@root', path.resolve(__dirname, '../../'))
     config.module

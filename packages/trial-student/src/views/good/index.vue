@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watch } from 'vue'
+import { defineComponent, reactive, ref, watch, onMounted } from 'vue'
 import {
   Tag,
   Col,
@@ -72,6 +72,8 @@ import * as api from '@root/common/api/package'
 import * as trial from '@root/common/api/trial-student'
 import { useStore } from 'vuex'
 import { getStudentPackageList } from '@root/common/api/student-package'
+import wx from 'wx-jdk'
+import { jsTicket } from '@root/common/api/wechat'
 export default defineComponent({
   name: 'Good',
   components: {
@@ -90,6 +92,8 @@ export default defineComponent({
     const store = useStore()
 
     const loading = ref(false)
+
+    console.log(wx)
 
     const goods = reactive({
       name: '课时包',
@@ -132,6 +136,29 @@ export default defineComponent({
         immediate: true
       }
     )
+
+    async function initWx () {
+      const url = location.href.split('#')[0]
+      const { data: { data } } = await jsTicket({ url: encodeURIComponent(url) })
+      wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature, // 必填，签名
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+      })
+      wx.ready(() => {
+        console.log('any')
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+      })
+      wx.error((res: any) => {
+        console.log(res)
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+      })
+    }
+
+    onMounted(() => initWx())
 
     async function buy () {
       if (!store.state.oauth.openid) {

@@ -1,6 +1,7 @@
 import * as type from '../const/type/wechat'
 import { AxiosPromise } from 'axios'
 import http from '../utils/http'
+import { ApiResponse } from '../const/api'
 
 /**
  * 获取openId
@@ -12,6 +13,10 @@ export function fetchOpenId (params: type.ICode): AxiosPromise<type.IOpenId> {
 
 export function fetchUserInfo (params: type.IInfo): AxiosPromise<type.IUserInfo> {
   return http.post('wechat/userInfo', params)
+}
+
+export function jsTicket (params: {url: string}): ApiResponse<type.JsSdkDto> {
+  return http.post('/wechat/jsTicket', params)
 }
 
 export function openIdLogin (params: {
