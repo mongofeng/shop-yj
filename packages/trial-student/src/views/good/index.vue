@@ -1,8 +1,17 @@
 <template>
   <div class="goods">
+    <van-action-sheet
+      v-model:show="show"
+      :actions="actions"
+      cancel-text="取消"
+      close-on-click-action
+      @select="onSelect"
+      @cancel="onCancel"
+    />
+
     <van-swipe class="goods-swipe" :autoplay="3000">
       <van-swipe-item v-for="thumb in goods.thumb" :key="thumb">
-        <img :src="thumb" >
+        <img :src="thumb" />
       </van-swipe-item>
     </van-swipe>
 
@@ -18,11 +27,11 @@
     </van-cell-group>
 
     <van-cell-group class="goods-cell-group">
-      <van-cell value="进入店铺" icon="shop-o" is-link @click="sorry">
-        <template v-slot:title>
+      <van-cell title="分享" icon="shop-o" is-link @click="onShow">
+        <!-- <template v-slot:title>
           <span class="van-cell-text">有赞的店</span>
           <van-tag class="goods-tag" type="danger">官方</van-tag>
-        </template>
+        </template>-->
       </van-cell>
       <van-cell title="线下门店" icon="location-o" is-link @click="sorry" />
     </van-cell-group>
@@ -32,29 +41,8 @@
     </van-cell-group>
 
     <div style="margin: 16px">
-      <van-button round block type="primary"  :disabled="loading" @click="buy">
-        购买
-      </van-button>
-
-      <van-button  @click="onMenuShareTimeline" class="mt10">
-        分享
-      </van-button>
+      <van-button round block type="primary" :disabled="loading" @click="buy">购买</van-button>
     </div>
-
-    <!-- <van-goods-action>
-      <van-goods-action-icon icon="chat-o" @click="sorry">
-        客服
-      </van-goods-action-icon>
-      <van-goods-action-icon icon="cart-o" @click="onClickCart">
-        购物车
-      </van-goods-action-icon>
-      <van-goods-action-button type="warning" @click="sorry">
-        加入购物车
-      </van-goods-action-button>
-      <van-goods-action-button type="danger" @click="sorry">
-        立即购买
-      </van-goods-action-button>
-    </van-goods-action> -->
   </div>
 </template>
 
@@ -69,7 +57,8 @@ import {
   Swipe,
   Toast,
   SwipeItem,
-  Button
+  Button,
+  ActionSheet
 } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
 import * as api from '@root/common/api/package'
@@ -88,6 +77,7 @@ export default defineComponent({
     [CellGroup.name]: CellGroup,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
+    [ActionSheet.name]: ActionSheet,
     [Button.name]: Button
   },
   setup () {
@@ -124,12 +114,27 @@ export default defineComponent({
       router.push('cart')
     }
 
+    const show = ref(false)
+    const actions = [
+      { name: '分享到朋友', value: 'f' },
+      { name: '分享到朋友圈', value: 'q' }
+    ]
+    const onCancel = () => {
+      show.value = false
+    }
+
+    const onShow = () => {
+      show.value = true
+    }
+
     // fetch the user information when params change
     watch(
       () => route.params,
-      async (newParams) => {
+      async newParams => {
         if (typeof newParams.id === 'string') {
-          const { data: { data } } = await api.getPackage(newParams.id)
+          const {
+            data: { data }
+          } = await api.getPackage(newParams.id)
           goods.name = data.name
           goods.price = data.priceAmount || data.amount
           goods.count = data.count
@@ -145,14 +150,21 @@ export default defineComponent({
     async function initWx () {
       const url = location.href.split('#')[0]
       // 不能encode妈的
-      const { data: { data } } = await jsTicket({ url: url })
+      const {
+        data: { data }
+      } = await jsTicket({ url: url })
       wx.config({
         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: data.appId, // 必填，公众号的唯一标识
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.nonceStr, // 必填，生成签名的随机串
         signature: data.signature, // 必填，签名
-        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'updateAppMessageShareData', 'updateTimelineShareData']
+        jsApiList: [
+          'onMenuShareTimeline',
+          'onMenuShareAppMessage',
+          'updateAppMessageShareData',
+          'updateTimelineShareData'
+        ]
       })
       wx.ready(() => {
         console.log('any')
@@ -179,7 +191,11 @@ export default defineComponent({
 
       try {
         // 查询是否已经登记了正式学员的身份
-        const { data: { data: { list } } } = await trial.getStudentList({
+        const {
+          data: {
+            data: { list }
+          }
+        } = await trial.getStudentList({
           page: 1,
           limit: 50,
           query: {
@@ -187,8 +203,13 @@ export default defineComponent({
           }
         })
 
-        if (list && list.length) { // 去购买
-          const { data: { data: { list: packages } } } = await getStudentPackageList({
+        if (list && list.length) {
+          // 去购买
+          const {
+            data: {
+              data: { list: packages }
+            }
+          } = await getStudentPackageList({
             page: 1,
             limit: 50,
             query: {
@@ -211,36 +232,75 @@ export default defineComponent({
             }
           })
         } else {
-          router.push(
-            {
-              name: 'Form',
-              query: {
-                orderId: goods.id,
-                price: goods.price,
-                name: goods.name,
-                routeName: 'Pay'
-              }
+          router.push({
+            name: 'Form',
+            query: {
+              orderId: goods.id,
+              price: goods.price,
+              name: goods.name,
+              routeName: 'Pay'
             }
-          )
+          })
         }
       } catch (error) {
         Toast('查询学生信息出错')
       }
     }
 
-    function onMenuShareTimeline () {
+    function onMenuShareAppMessage () {
       wx.updateAppMessageShareData({
         title: '杨瑾美术大优惠', // 分享标题
         desc: '杨瑾美术大优惠', // 分享描述
-        link: 'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        link:
+          'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: '', // 分享图标
         success: () => {
           // 设置成功
+          Toast('请点击右上角分享给好友')
         }
       })
     }
 
-    return { goods, formatPrice, sorry, onClickCart, loading, buy, onMenuShareTimeline } // 这里返回的任何内容都可以用于组件的其余部分
+    function onMenuShareTimeline () {
+      wx.updateTimelineShareData({
+        title: '杨瑾美术大优惠', // 分享标题
+        desc: '杨瑾美术大优惠', // 分享描述
+        link:
+          'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        success: () => {
+          // 设置成功
+          Toast('请点击右上角分享给好友圈')
+        }
+      })
+    }
+
+    const onSelect = (item: { value: string }) => {
+      // 默认情况下点击选项时不会自动收起
+      // 可以通过 close-on-click-action 属性开启自动收起
+      // show.value = false;
+      if (item.value === 'f') {
+        onMenuShareAppMessage()
+      } else {
+        onMenuShareTimeline()
+      }
+    }
+
+    return {
+      show,
+      actions,
+      onSelect,
+      onCancel,
+      goods,
+      formatPrice,
+      sorry,
+      onClickCart,
+      loading,
+      buy,
+      onMenuShareTimeline,
+      onShow,
+      onMenuShareAppMessage
+    } // 这里返回的任何内容都可以用于组件的其余部分
   }
 })
 </script>
