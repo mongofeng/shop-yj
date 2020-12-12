@@ -8,6 +8,7 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { Loading } from 'vant'
 import { useRoute } from 'vue-router'
+import { RedirectUrl } from '@root/common/utils/redirct'
 export default defineComponent({
   name: 'Share',
 
@@ -26,7 +27,16 @@ export default defineComponent({
       const { id } = route.query
 
       if (id) {
-        const url = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6bce565776a81ced&redirect_uri=http%3A%2F%2Fyangjin-art.top%2Ftrial-student%2F&response_type=code&scope=snsapi_userinfo&state=${id}#wechat_redirect`
+        console.log(process.env)
+        const {
+          VUE_APP_BASE_HOST,
+          VUE_APP_BASE_URL
+        } = process.env
+        const path = `${VUE_APP_BASE_HOST}${VUE_APP_BASE_URL}`
+        const host = encodeURIComponent(path)
+
+        const url = RedirectUrl(host, `state=${id}`)
+
         location.replace(url)
       } else {
         loading.value = false
