@@ -22,7 +22,7 @@
       </van-cell>
       <van-cell class="goods-express">
         <van-col span="10">课时：{{ goods.count }}</van-col>
-        <van-col span="14">课时有效期：{{ goods.period }}年</van-col>
+        <van-col span="14">课时有效期：{{ goods.period }}月</van-col>
       </van-cell>
     </van-cell-group>
 
@@ -36,9 +36,9 @@
       <van-cell title="线下门店" icon="location-o" is-link @click="sorry" />
     </van-cell-group>
 
-    <van-cell-group class="goods-cell-group">
+    <!-- <van-cell-group class="goods-cell-group">
       <van-cell title="查看商品详情" is-link @click="sorry" />
-    </van-cell-group>
+    </van-cell-group> -->
 
     <div style="margin: 16px">
       <van-button round block type="primary" :disabled="loading" @click="buy">购买</van-button>
@@ -109,7 +109,26 @@ export default defineComponent({
     }
 
     const sorry = () => {
-      Toast('暂无后续逻辑~')
+      // Toast('暂无后续逻辑~')
+      // wx.getLocation({
+      //   type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+      //   success: (res: any) => {
+      //     // var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+      //     // var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+      //     // var speed = res.speed; // 速度，以米/每秒计
+      //     // var accuracy = res.accuracy; // 位置精度
+      //     alert(JSON.stringify(res))
+      //   }
+      // })
+
+      wx.openLocation({
+        latitude: 22.960844, // 纬度，浮点数，范围为90 ~ -90
+        longitude: 113.07935, // 经度，浮点数，范围为180 ~ -180。
+        name: '杨瑾美术', // 位置名
+        address: '地址详情说明', // 地址详情说明
+        scale: 10, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        infoUrl: 'http://baidu.com' // 在查看位置界面底部显示的超链接,可点击跳转
+      })
     }
 
     const onClickCart = () => {
@@ -162,6 +181,8 @@ export default defineComponent({
         nonceStr: data.nonceStr, // 必填，生成签名的随机串
         signature: data.signature, // 必填，签名
         jsApiList: [
+          'getLocation',
+          'openLocation',
           'onMenuShareTimeline',
           'onMenuShareAppMessage',
           'updateAppMessageShareData',
