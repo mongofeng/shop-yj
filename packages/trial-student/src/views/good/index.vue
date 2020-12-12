@@ -111,7 +111,7 @@ export default defineComponent({
     const sorry = () => {
       // Toast('暂无后续逻辑~')
       // wx.getLocation({
-      //   type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+      //   type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
       //   success: (res: any) => {
       //     // var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
       //     // var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
@@ -122,11 +122,11 @@ export default defineComponent({
       // })
 
       wx.openLocation({
-        latitude: 22.960844, // 纬度，浮点数，范围为90 ~ -90
-        longitude: 113.07935, // 经度，浮点数，范围为180 ~ -180。
+        latitude: 22.958388, // 纬度，浮点数，范围为90 ~ -90
+        longitude: 113.084940, // 经度，浮点数，范围为180 ~ -180。
         name: '杨瑾美术', // 位置名
-        address: '地址详情说明', // 地址详情说明
-        scale: 10, // 地图缩放级别,整形值,范围从1~28。默认为最大
+        address: '广东省佛山市顺德区乐从镇新马路40号', // 地址详情说明
+        scale: 24, // 地图缩放级别,整形值,范围从1~28。默认为最大
         infoUrl: 'http://baidu.com' // 在查看位置界面底部显示的超链接,可点击跳转
       })
     }
