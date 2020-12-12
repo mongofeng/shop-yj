@@ -35,7 +35,7 @@ export default defineComponent({
         const path = `${VUE_APP_BASE_HOST}${VUE_APP_BASE_URL}`
         const host = encodeURIComponent(path)
 
-        const url = RedirectUrl(host, `state=${id}`)
+        const url = RedirectUrl(host, `${id}`)
 
         location.replace(url)
       } else {

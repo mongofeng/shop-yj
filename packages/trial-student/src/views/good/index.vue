@@ -87,18 +87,20 @@ export default defineComponent({
 
     const loading = ref(false)
 
-    console.log(wx)
-    console.log(route)
+    const {
+      VUE_APP_BASE_HOST,
+      VUE_APP_BASE_URL
+    } = process.env
+    const path = `${VUE_APP_BASE_HOST}${VUE_APP_BASE_URL}`
 
     const goods = reactive({
-      name: '课时包',
+      name: '网络错误，请不要购买',
       price: 0,
       count: 0,
       period: 1,
       id: '',
       thumb: [
-        'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
-        'https://img.yzcdn.cn/public_files/2017/10/24/1791ba14088f9c2be8c610d0a6cc0f93.jpeg'
+        `${path}static-imag/banner.png`
       ]
     })
 
@@ -247,13 +249,19 @@ export default defineComponent({
       }
     }
 
+    const title = '杨瑾美术新生钜惠'
+    const desc = '联合新生课包只需499元'
+
+    const link = path + 'share?id=' + route.params.id
+    console.log(path)
+    const imgUrl = `${path}static-imag/logo.png`
+
     function onMenuShareAppMessage () {
       wx.updateAppMessageShareData({
-        title: '杨瑾美术大优惠', // 分享标题
-        desc: '杨瑾美术大优惠', // 分享描述
-        link:
-          'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: '', // 分享图标
+        title, // 分享标题
+        desc, // 分享描述
+        link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl, // 分享图标
         success: () => {
           // 设置成功
           Toast('请点击右上角分享给好友')
@@ -263,11 +271,10 @@ export default defineComponent({
 
     function onMenuShareTimeline () {
       wx.updateTimelineShareData({
-        title: '杨瑾美术大优惠', // 分享标题
-        desc: '杨瑾美术大优惠', // 分享描述
-        link:
-          'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: '', // 分享图标
+        title, // 分享标题
+        desc, // 分享描述
+        link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl, // 分享图标
         success: () => {
           // 设置成功
           Toast('请点击右上角分享给好友圈')
