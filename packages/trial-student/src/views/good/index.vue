@@ -35,6 +35,10 @@
       <van-button round block type="primary"  :disabled="loading" @click="buy">
         购买
       </van-button>
+
+      <van-button  @click="onMenuShareTimeline" class="mt10">
+        分享
+      </van-button>
     </div>
 
     <!-- <van-goods-action>
@@ -94,6 +98,7 @@ export default defineComponent({
     const loading = ref(false)
 
     console.log(wx)
+    console.log(route)
 
     const goods = reactive({
       name: '课时包',
@@ -139,14 +144,15 @@ export default defineComponent({
 
     async function initWx () {
       const url = location.href.split('#')[0]
-      const { data: { data } } = await jsTicket({ url: encodeURIComponent(url) })
+      // 不能encode妈的
+      const { data: { data } } = await jsTicket({ url: url })
       wx.config({
         debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: data.appId, // 必填，公众号的唯一标识
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.nonceStr, // 必填，生成签名的随机串
         signature: data.signature, // 必填，签名
-        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'updateAppMessageShareData', 'updateTimelineShareData']
       })
       wx.ready(() => {
         console.log('any')
@@ -222,7 +228,19 @@ export default defineComponent({
       }
     }
 
-    return { goods, formatPrice, sorry, onClickCart, loading, buy } // 这里返回的任何内容都可以用于组件的其余部分
+    function onMenuShareTimeline () {
+      wx.updateAppMessageShareData({
+        title: '杨瑾美术大优惠', // 分享标题
+        desc: '杨瑾美术大优惠', // 分享描述
+        link: 'http://yangjin-art.top/trial-student/share?id=' + route.params.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        success: () => {
+          // 设置成功
+        }
+      })
+    }
+
+    return { goods, formatPrice, sorry, onClickCart, loading, buy, onMenuShareTimeline } // 这里返回的任何内容都可以用于组件的其余部分
   }
 })
 </script>

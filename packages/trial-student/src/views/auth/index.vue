@@ -33,8 +33,12 @@ export default defineComponent({
         await store.dispatch('oauth/fetchUserId')
         console.log(store.state.oauth)
         if (ret) { // 跳转
-          if (store.state.oauth.state) {
-            router.replace(store.state.oauth.state)
+          const id = store.state.oauth.state
+          if (id) {
+            router.replace({
+              name: 'Good',
+              params: { id }
+            })
           } else {
             router.replace({
               name: 'Shop'
