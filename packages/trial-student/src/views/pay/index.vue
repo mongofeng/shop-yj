@@ -1,24 +1,31 @@
 <template>
-  <div class="weui-form-preview pay">
-    <div class="weui-form-preview__hd">
-      <div class="weui-form-preview__item">
-        <label class="weui-form-preview__label">付款金额</label>
-        <em class="weui-form-preview__value">¥{{price}}</em>
+  <div class="pay">
+    <div class="weui-form-preview ">
+      <div class="weui-form-preview__hd">
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">付款金额</label>
+          <em class="weui-form-preview__value">¥{{ price }}</em>
+        </div>
+      </div>
+      <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">商品</label>
+          <span class="weui-form-preview__value">{{ name }}</span>
+        </div>
       </div>
     </div>
-    <div class="weui-form-preview__bd">
-      <div class="weui-form-preview__item">
-        <label class="weui-form-preview__label">商品</label>
-        <span class="weui-form-preview__value">{{name}}</span>
-      </div>
-    </div>
-    <div class="weui-form-preview__ft">
-
-      <button  class="weui-btn  weui-btn_primary" :class="{'weui-btn_loading': loading}" @click="toPay" >
-        <span v-if="loading" class="weui-primary-loading weui-primary-loading_transparent"><i class="weui-primary-loading__dot"></i></span>
-        支付{{loading ? '中...' : ''}}
-      </button>
-    </div>
+    <button
+      class="weui-btn weui-btn_primary mt30 full-w"
+      :class="{ 'weui-btn_loading': loading }"
+      @click="toPay"
+    >
+      <span
+        v-if="loading"
+        class="weui-primary-loading weui-primary-loading_transparent "
+        ><i class="weui-primary-loading__dot"></i
+      ></span>
+      支付{{ loading ? "中..." : "" }}
+    </button>
   </div>
 </template>
 <script lang="ts">
@@ -73,12 +80,11 @@ export default defineComponent({
     }
 
     async function getPreOrder () {
-      const {
-        orderId,
-        studentId
-      } = route.query
+      const { orderId, studentId } = route.query
       try {
-        const { data: { data } } = await addOrder({
+        const {
+          data: { data }
+        } = await addOrder({
           openid: store.state.oauth.openid,
           packageId: orderId as string,
           studentId: studentId as string
@@ -98,10 +104,7 @@ export default defineComponent({
     }
 
     async function toPay () {
-      const {
-        orderId,
-        studentId
-      } = route.query
+      const { orderId, studentId } = route.query
 
       if (!store.state.oauth.openid) {
         Toast('没有openid')
@@ -122,7 +125,8 @@ export default defineComponent({
       }
       loading.value = true
       try {
-        if (payRequest.isFetchOrder) { // 是否去调用订单
+        if (payRequest.isFetchOrder) {
+          // 是否去调用订单
           await getPreOrder()
         }
 
