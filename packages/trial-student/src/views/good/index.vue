@@ -71,6 +71,7 @@ import { useRoute, useRouter } from 'vue-router'
 import * as api from '@root/common/api/package'
 import * as trial from '@root/common/api/trial-student'
 import { useStore } from 'vuex'
+import { getStudentPackageList } from '@root/common/api/student-package'
 export default defineComponent({
   name: 'Good',
   components: {
@@ -154,7 +155,19 @@ export default defineComponent({
         })
 
         if (list && list.length) { // 去购买
-        // 购买的逻辑
+          const { data: { data: { list: packages } } } = await getStudentPackageList({
+            page: 1,
+            limit: 50,
+            query: {
+              studentId: list[0].id
+            }
+          })
+
+          if (packages.length) {
+            Toast('查询已经购买过体验包')
+            return
+          }
+          // 购买的逻辑
           router.push({
             name: 'Pay',
             query: {

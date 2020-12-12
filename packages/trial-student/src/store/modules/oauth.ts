@@ -12,6 +12,7 @@ export const ADD_USERID = 'ADD_USERID' // 添加用户id
 const ADD_USER_MESSAGE_LIST = 'ADD_USER_MESSAGE_LIST' // 添加学生列表相关联的
 
 const ADD_TOKEN = 'ADD_TOKEN' // 添加token
+const ADD_STATUS = 'ADD_STATUS' // 添加ADD_STATUS
 
 const ADD_STUDENT_TYPE = 'ADD_STUDENT_TYPE' // 添加是否为试用状态
 export interface Istate {
@@ -19,6 +20,7 @@ export interface Istate {
   userid: string;
   userList: type.IStudent[];
   token: string;
+  state: string;
   isTrial: boolean;
 }
 
@@ -28,7 +30,8 @@ const state: Istate = {
   isTrial: false,
   userid: '',
   userList: [],
-  token: ''
+  token: '',
+  state: ''
 }
 
 // getters
@@ -60,6 +63,7 @@ const actions = {
     const obj = query2Obj(getQuery())
 
     const code = obj.code
+    commit(ADD_STATUS, obj.state || '')
 
     if (!code) {
       console.error('当前没有code，不执行获取openid接口')
@@ -149,6 +153,9 @@ const mutations = {
   },
   [ADD_STUDENT_TYPE] (state: Istate, s: boolean) {
     state.isTrial = s
+  },
+  [ADD_STATUS] (state: Istate, s: string) {
+    state.state = s
   }
 }
 
