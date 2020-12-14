@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable */
+
 
 const { merge } = require('webpack-merge')
 const path = require('path')
@@ -55,6 +56,7 @@ module.exports = {
     if (process.env.NODE_ENV === 'production') {
       // 干掉console.log:https://juejin.im/post/5c84b709e51d4578ca71dde4#heading-0
       config.optimization.minimizer[0].options.terserOptions.compress.warnings = false
+
       config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
       config.optimization.minimizer[0].options.terserOptions.compress.drop_debugger = true
       config.optimization.minimizer[0].options.terserOptions.compress.pure_funcs = ['console.log']
@@ -63,6 +65,12 @@ module.exports = {
 
   chainWebpack: config => {
     config.resolve.alias.set('@root', path.resolve(__dirname, '../../'))
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = process.env.title
+        return args
+      })
     config.module
       .rule('ts')
       .use('ts-loader')

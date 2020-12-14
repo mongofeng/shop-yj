@@ -1,33 +1,30 @@
 // TODO: 应用管理Vuex相关逻辑，待移除
 import * as api from '@root/common/api/wechat'
-import * as apiStu from '@root/common/api/student'
-import * as type from '@root/common/const/type/student'
+import { getteacherList } from '@root/common/api/teacher'
+import * as type from '@root/common/const/type/teacher'
 import { ActionContext } from 'vuex'
 import { query2Obj, getQuery } from '@root/common/utils/url'
 import { accessTokenName } from '@root/common/utils/http'
+import { TEACHER_STATUS } from '@root/common/const/enum'
 
 const ADD_OPENID = 'ADD_OPENID' // 添加openid
 export const ADD_USERID = 'ADD_USERID' // 添加用户id
 
-const ADD_USER_MESSAGE_LIST = 'ADD_USER_MESSAGE_LIST' // 添加学生列表相关联的
-
 const ADD_TOKEN = 'ADD_TOKEN' // 添加token
 const ADD_STATUS = 'ADD_STATUS' // 添加ADD_STATUS
 
-const ADD_STUDENT_TYPE = 'ADD_STUDENT_TYPE' // 添加是否为试用状态
 export interface Istate {
   openid: string;
   userid: string;
-  userList: type.IStudent[];
+  userList: type.ITeacher[];
   token: string;
   state: string;
-  isTrial: boolean;
+
 }
 
 // initial state
 const state: Istate = {
   openid: localStorage.getItem('openid') || '',
-  isTrial: false,
   userid: '',
   userList: [],
   token: '',
@@ -36,25 +33,7 @@ const state: Istate = {
 
 // getters
 const getters = {
-  openid: (state: Istate) => state.openid,
-  userMsg: (state: Istate) => {
-    if (!state.userid) {
-      return {}
-    }
-    const find = state.userList.filter((item) => item._id === state.userid)
-    if (!find || !find.length) {
-      return {}
-    }
-
-    const [first] = find
-    return first || {}
-  },
-  userListMsg: (state: Istate) => {
-    return state.userList.reduce((initVal: {[key in string]: string}, item) => {
-      initVal[item._id] = item.name
-      return initVal
-    }, {})
-  }
+  openid: (state: Istate) => state.openid
 }
 
 // actions
@@ -97,10 +76,13 @@ const actions = {
   async fetchUserId ({ commit, state }: ActionContext<Istate, any>) {
     if (!state.openid) {
       console.error('必须要有openid才可以获取userId')
-      return
+      return {
+        message: '必须要有openid才可以获取userId',
+        state: false
+      }
     }
 
-    const { data: { data: { list } } } = await apiStu.getStudentList({
+    const { data: { data: { list } } } = await getteacherList({
       page: 1,
       limit: 50,
       query: {
@@ -111,30 +93,34 @@ const actions = {
     // 判断是否正式的学生
     if (!list || !list.length) {
       console.warn('当前openid没有绑定')
-      commit(ADD_STUDENT_TYPE, true)
-      return
+      return {
+        message: '当前openid没有绑定,请先在后台绑定',
+        state: false
+      }
     }
 
-    commit(ADD_STUDENT_TYPE, false)
-
-    commit(ADD_USER_MESSAGE_LIST, list) // 绑定多个学yuanyuan情况
     const [first] = list
-    if (!first) { return }
-    if (!state.userid) {
-      commit(ADD_USERID, first._id)
-    }
-  },
-
-  onChangeUser ({ commit, state }: ActionContext<Istate, any>, id: string) {
-    const find = state.userList.filter((item) => item._id === id)
-    if (!find || !find.length) {
-      return
+    if (!first) {
+      return {
+        message: '找不到对应的用户',
+        state: false
+      }
     }
 
-    const [first] = find
-    if (!first) { return }
+    if (first.state !== TEACHER_STATUS.InService) {
+      return {
+        message: '改账号已被冻结',
+        state: false
+      }
+    }
+
     commit(ADD_USERID, first._id)
+    return {
+      message: '登录成功',
+      state: true
+    }
   }
+
 }
 
 // mutations
@@ -145,15 +131,11 @@ const mutations = {
   [ADD_USERID] (state: Istate, userid: string) {
     state.userid = userid
   },
-  [ADD_USER_MESSAGE_LIST] (state: Istate, list: type.IStudent[]) {
-    state.userList = list
-  },
+
   [ADD_TOKEN] (state: Istate, s: string) {
     state.token = s
   },
-  [ADD_STUDENT_TYPE] (state: Istate, s: boolean) {
-    state.isTrial = s
-  },
+
   [ADD_STATUS] (state: Istate, s: string) {
     state.state = s
   }
