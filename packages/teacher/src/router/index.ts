@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Auth from '@/views/auth/index.vue'
 import BottomBar from '@/components/bottom-bar.vue'
 import Pay from '@/views/pay/index.vue'
 import User from '@/views/user/index.vue'
@@ -7,15 +6,7 @@ import Shop from '@/views/shop/index.vue'
 import Share from '@/views/share/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    redirect: '/auth'
-  },
-  {
-    path: '/auth',
-    name: 'Auth',
-    component: Auth
-  },
+
   {
     path: '/share',
     name: 'Share',
