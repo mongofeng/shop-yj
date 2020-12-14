@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 import * as enums from '../enum'
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface ICourse {
   readonly _id?: string;
   name: string;
   teacherId: string;
   studentIds: string[];
+  trialStudentIds: string[];
   status: enums.COURSE_STATUS;
   desc: string;
   day: enums.WEEK[]; // 一周

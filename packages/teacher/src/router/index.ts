@@ -2,16 +2,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BottomBar from '@/components/bottom-bar.vue'
 import Pay from '@/views/pay/index.vue'
 import User from '@/views/user/index.vue'
-import Shop from '@/views/shop/index.vue'
-import Share from '@/views/share/index.vue'
+import CourseList from '@/views/course/index.vue'
+import CourseDetail from '@/views/share/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
 
-  {
-    path: '/share',
-    name: 'Share',
-    component: Share
-  },
   {
     path: '/user',
     name: 'User',
@@ -23,14 +18,6 @@ const routes: Array<RouteRecordRaw> = [
       title: '会员中心'
     }
   },
-  // {
-  //   path: '/cart',
-  //   name: 'Cart',
-  //   component: () => import(/* webpackChunkName: "cart" */ '@/views/cart/index.vue'),
-  //   meta: {
-  //     title: '购物车'
-  //   }
-  // },
   {
     path: '/good/:id',
     name: 'Good',
@@ -45,10 +32,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "form" */ '@/views/form/index.vue')
   },
   {
-    path: '/shop',
-    name: 'Shop',
+    path: '/course-list',
+    name: 'CourseList',
     components: {
-      default: Shop,
+      default: CourseList,
       bar: BottomBar
     }
   },
