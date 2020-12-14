@@ -2,6 +2,7 @@
 import * as enums from '../enum'
 export interface ICourse {
   readonly _id?: string;
+  id: string;
   name: string;
   teacherId: string;
   studentIds: string[];
