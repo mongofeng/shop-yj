@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-tabbar route>
-      <van-tabbar-item replace to="/shop" icon="home-o"> 课包商城 </van-tabbar-item>
+      <van-tabbar-item replace to="/course-list" icon="home-o"> 今天课程 </van-tabbar-item>
       <van-tabbar-item replace to="/user" icon="friends-o"> 个人 </van-tabbar-item>
     </van-tabbar>
   </div>
