@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 import * as enums from '../enum'
 import { ICourse } from './student-operation'
 
