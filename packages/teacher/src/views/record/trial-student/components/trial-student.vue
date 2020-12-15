@@ -6,22 +6,22 @@
       finished-text="没有更多了"
       @load="loadList"
     >
-
       <van-cell :title="dict.get(i.studentId) || ''"  v-for="i of list" :key="i.id" :value="i.num + '课时'" :label="formateType(i)"/>
     </van-list>
  </div>
 </template>
 <script lang="ts">
-import { getHourrList } from '@root/common/api/hour'
-import { getStudentList } from '@root/common/api/student'
+import { gettrialCclassRecordList } from '@root/common/api/trial-course-record'
+import { getTrialStudentList } from '@root/common/api/trial-student'
 import { compositionList } from '@root/common/composition/list'
 import { COURSE_HOUR_ACTION_TYPE_LABEL } from '@root/common/const/enum'
 import { IHour } from '@root/common/const/type/hour'
+import { TrialCourseRecord } from '@root/common/const/type/trial-course-record'
 import { Cell, List } from 'vant'
 import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
-  name: 'StudentRecord',
+  name: 'TrialStudentRecordItem',
 
   props: {
     type: {
@@ -37,7 +37,7 @@ export default defineComponent({
   },
 
   setup (props) {
-    const { loadList, data } = compositionList(getHourrList)
+    const { loadList, data } = compositionList(gettrialCclassRecordList)
     const studentMap = reactive({
       dict: new Map()
     })
@@ -72,11 +72,11 @@ export default defineComponent({
     }
 
     watchEffect(async () => {
-      const ids = data.list.map((i: IHour) => i.studentId)
+      const ids = data.list.map((i: TrialCourseRecord) => i.studentId)
 
       if (!ids.length) { return }
 
-      const { data: { data: { list: result } } } = await getStudentList({
+      const { data: { data: { list: result } } } = await getTrialStudentList({
         page: 1,
         limit: ids.length,
         query: {

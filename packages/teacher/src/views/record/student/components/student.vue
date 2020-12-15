@@ -12,17 +12,16 @@
  </div>
 </template>
 <script lang="ts">
-import { gettrialCclassRecordList } from '@root/common/api/trial-course-record'
-import { getTrialStudentList } from '@root/common/api/trial-student'
+import { getHourrList } from '@root/common/api/hour'
+import { getStudentList } from '@root/common/api/student'
 import { compositionList } from '@root/common/composition/list'
 import { COURSE_HOUR_ACTION_TYPE_LABEL } from '@root/common/const/enum'
 import { IHour } from '@root/common/const/type/hour'
-import { TrialCourseRecord } from '@root/common/const/type/trial-course-record'
 import { Cell, List } from 'vant'
 import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
-  name: 'TrialStudentRecord',
+  name: 'StudentRecordItem',
 
   props: {
     type: {
@@ -38,7 +37,7 @@ export default defineComponent({
   },
 
   setup (props) {
-    const { loadList, data } = compositionList(gettrialCclassRecordList)
+    const { loadList, data } = compositionList(getHourrList)
     const studentMap = reactive({
       dict: new Map()
     })
@@ -73,11 +72,11 @@ export default defineComponent({
     }
 
     watchEffect(async () => {
-      const ids = data.list.map((i: TrialCourseRecord) => i.studentId)
+      const ids = data.list.map((i: IHour) => i.studentId)
 
       if (!ids.length) { return }
 
-      const { data: { data: { list: result } } } = await getTrialStudentList({
+      const { data: { data: { list: result } } } = await getStudentList({
         page: 1,
         limit: ids.length,
         query: {
