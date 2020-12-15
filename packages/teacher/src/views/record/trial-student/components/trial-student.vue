@@ -93,7 +93,7 @@ export default defineComponent({
     })
 
     function formateType (i: IHour) {
-      const time = dayjs(i.createDate).format('YYYY年MMDD HH:mm') // '25/01/2019'
+      const time = dayjs(i.createDate).format('YYYY年MM月DD日 HH:mm') // '25/01/2019'
       return COURSE_HOUR_ACTION_TYPE_LABEL[i.type] + ' ' + time
     }
 
