@@ -53,6 +53,8 @@ export default defineComponent({
       const date = new Date()
       date.setHours(0)
       date.setMinutes(0)
+      date.setSeconds(0)
+      date.setMilliseconds(0)
       data.query = {
         ...data.query,
         createDate: {
@@ -63,6 +65,8 @@ export default defineComponent({
       const date = new Date()
       date.setHours(0)
       date.setMinutes(0)
+      date.setSeconds(0)
+      date.setMilliseconds(0)
       date.setDate(1)
       data.query = {
         ...data.query,
