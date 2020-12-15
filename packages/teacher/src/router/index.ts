@@ -1,9 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BottomBar from '@/components/bottom-bar.vue'
-import Pay from '@/views/pay/index.vue'
 import User from '@/views/user/index.vue'
 import CourseList from '@/views/course/index.vue'
-import CourseDetail from '@/views/share/index.vue'
+import CourseDetail from '@/views/course/detail.vue'
 
 const routes: Array<RouteRecordRaw> = [
 
@@ -19,9 +18,9 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/good/:id',
-    name: 'Good',
-    component: () => import(/* webpackChunkName: "goods" */ '@/views/good/index.vue'),
+    path: '/course/:id',
+    name: 'CourseDetail',
+    component: CourseDetail,
     meta: {
       title: '商品详情'
     }
@@ -38,11 +37,6 @@ const routes: Array<RouteRecordRaw> = [
       default: CourseList,
       bar: BottomBar
     }
-  },
-  {
-    path: '/pay',
-    name: 'Pay',
-    component: Pay
   }
 ]
 
