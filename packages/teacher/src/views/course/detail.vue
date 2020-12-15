@@ -1,60 +1,72 @@
 <template>
   <div class="goods">
+    <van-loading v-if="loading" />
     <van-cell-group>
       <van-cell>
-        <div class="goods-title">{{ goods.name }}</div>
-        <div class="goods-price">{{ formatPrice(goods.price) }}</div>
+        <div class="goods-title">{{ course.name }}</div>
+        <div class="goods-price">{{ `${course.startTime } - ${course.endTime }`}}</div>
       </van-cell>
     </van-cell-group>
 
+    <van-tabs v-model:active="active">
+      <van-tab title="学生">
+        <student :ids="course.studentIds"></student>
+      </van-tab>
+      <van-tab title="试用学生">
+        <trialstudent :ids="course.trialStudentIds"></trialstudent>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref, watch, onMounted } from 'vue'
 import {
-  Tag,
+
   Col,
-  Icon,
+
   Cell,
   CellGroup,
-  Swipe,
-  Toast,
-  SwipeItem,
   Button,
-  ActionSheet
+  Tab,
+  Tabs,
+  Empty,
+  Loading
 } from 'vant'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import * as api from '@root/common/api/course'
-
-import { useStore } from 'vuex'
-import { getTrialStudentPackageList } from '@root/common/api/trial-student-package'
-import wx from 'wx-jdk'
-import { jsTicket } from '@root/common/api/wechat'
-import { ICourse } from '@root/common/const/type/course'
+import Student from './components/student.vue'
+import TrialStudent from './components/trial-student.vue'
 export default defineComponent({
-  name: 'Good',
+  name: 'CourseDetail',
   components: {
-    [Tag.name]: Tag,
     [Col.name]: Col,
-    [Icon.name]: Icon,
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
-    [Swipe.name]: Swipe,
-    [SwipeItem.name]: SwipeItem,
-    [ActionSheet.name]: ActionSheet,
-    [Button.name]: Button
+    [Empty.name]: Empty,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Button.name]: Button,
+    [Loading.name]: Loading,
+    student: Student,
+    trialstudent: TrialStudent
   },
   setup () {
-    const router = useRouter()
     const route = useRoute()
-    const store = useStore()
 
     const loading = ref(false)
 
+    const active = ref(1)
+
     const course = reactive({
-      name: '网络错误，请不要购买',
+      name: '',
       id: '',
+      status: 0,
+      desc: '',
+      day: [], // 一周
+      time: 1,
+      startTime: '',
+      endTime: '',
       studentIds: [],
       trialStudentIds: []
     })
@@ -62,15 +74,27 @@ export default defineComponent({
     // fetch the user information when params change
     watch(
       () => route.params,
-      async newParams => {
+      async (newParams) => {
         if (typeof newParams.id === 'string') {
-          const {
-            data: { data }
-          } = await api.getCourse(newParams.id)
-          course.name = data.name
-          course.id = newParams.id
-          course.studentIds = data.studentIds as any
-          course.trialStudentIds = data.trialStudentIds as any
+          try {
+            loading.value = true
+            const {
+              data: { data }
+            } = await api.getCourse(newParams.id)
+            course.name = data.name
+            course.id = newParams.id
+            course.studentIds = data.studentIds as any
+            course.trialStudentIds = data.trialStudentIds as any
+            course.status = data.status
+            course.desc = data.desc
+            course.day = data.day as any
+            course.endTime = data.endTime || ''
+            course.startTime = data.startTime || ''
+
+            loading.value = false
+          } catch (error) {
+            loading.value = false
+          }
         }
       },
       {
@@ -79,10 +103,9 @@ export default defineComponent({
     )
 
     return {
-
       course,
+      active,
       loading
-
     }
   }
 })
