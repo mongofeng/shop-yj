@@ -218,7 +218,7 @@ export default defineComponent({
           data: {
             data: { list }
           }
-        } = await trial.getStudentList({
+        } = await trial.getTrialStudentList({
           page: 1,
           limit: 50,
           query: {

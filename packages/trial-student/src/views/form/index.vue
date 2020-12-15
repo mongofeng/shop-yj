@@ -69,7 +69,7 @@ export default defineComponent({
       }
       loading.value = true
       try {
-        const { data: { data } } = await api.addStudent({
+        const { data: { data } } = await api.addTrialStudent({
           ...values,
           openId: store.state.oauth.openid
         })
