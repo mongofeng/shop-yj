@@ -7,7 +7,7 @@
       :style="{ height: '60%' }"
       teleport="body"
     >
-      <van-form @submit="onConfirm">
+      <van-form @submit="onConfirm" class="mt20">
         <van-field name="num" label="课时">
           <template #input>
             <van-stepper v-model="num" />
@@ -185,6 +185,7 @@ export default defineComponent({
 
         await onSubmit(values)
         loading.value = false
+        show.value = false
       } catch (error) {
         loading.value = false
       }

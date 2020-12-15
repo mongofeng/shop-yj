@@ -111,33 +111,5 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.goods {
-  padding-bottom: 50px;
 
-  &-title {
-    font-size: 16px;
-  }
-
-  &-price {
-    color: #f44;
-  }
-
-  &-express {
-    color: #999;
-    font-size: 12px;
-    padding: 5px 15px;
-  }
-
-  &-cell-group {
-    margin: 15px 0;
-
-    .van-cell__value {
-      color: #999;
-    }
-  }
-
-  &-tag {
-    margin-left: 5px;
-  }
-}
 </style>
