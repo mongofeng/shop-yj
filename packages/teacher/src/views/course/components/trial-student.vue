@@ -198,6 +198,10 @@ export default defineComponent({
         show.value = false
         loading.value = false
       } catch (error) {
+        console.log(error)
+        if (error === 'cancel') {
+          show.value = false
+        }
         loading.value = false
       }
     }
