@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix */
 export interface IBuy {
   packageId: string;
   studentId: string;
@@ -11,6 +12,7 @@ export interface ICourse {
 }
 
 export interface ISign {
+  teacherId: string;
   studentId: string;
   course: ICourse[];
   num: number;
@@ -18,9 +20,18 @@ export interface ISign {
   courseName: string;
 }
 
-export type ISupplement = Omit<ISign, 'courseName'>;
+export type ISupplement = Omit<ISign, 'courseName'>
 
 export interface ISharePackage {
   packId: string;
   studentId: string;
+}
+
+export interface IActivatePackage {
+  activeTime: string;
+  endTime: string;
+  packageId: string;
+  studentId: string;
+  wechat: boolean;
+  id: string;
 }

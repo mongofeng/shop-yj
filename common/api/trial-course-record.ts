@@ -1,6 +1,7 @@
 import { TrialCoureseSignDto, TrialCourseRecord, TrialCourseSignVo } from '../const/type/trial-course-record'
 import { ApiListData, ApiResponse } from '../const/api'
 import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
 /**
  * 添加课程包
  * @param {*} params
@@ -13,7 +14,7 @@ export function addTrialCourseRecord (params: TrialCourseRecord) {
 *
 * @param params 查询参数
 */
-export function gettrialCclassRecordList (params: TrialCourseRecord): ApiListData<TrialCourseRecord> {
+export function gettrialCclassRecordList (params: QueryCondition<TrialCourseRecord>): ApiListData<TrialCourseRecord> {
   return http.post('trial-course-record/list', params)
 }
 

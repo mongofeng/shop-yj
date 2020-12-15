@@ -10,17 +10,17 @@
 
     <van-tabs v-model:active="active">
       <van-tab title="学生">
-        <student :ids="course.studentIds"></student>
+        <student :ids="course.studentIds" :courseId="course.id" :courseName="course.name"></student>
       </van-tab>
       <van-tab title="试用学生">
-        <trialstudent :ids="course.trialStudentIds"></trialstudent>
+        <trialstudent :ids="course.trialStudentIds" :courseId="course.id" :courseName="course.name"></trialstudent>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, watch, onMounted } from 'vue'
+import { defineComponent, reactive, ref, watch } from 'vue'
 import {
 
   Col,

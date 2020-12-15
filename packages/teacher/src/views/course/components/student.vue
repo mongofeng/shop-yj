@@ -1,7 +1,41 @@
 <template>
  <div>
-   <!-- 通用错误 -->
+   <van-popup
+      v-model:show="show"
+      closeable
+      position="bottom"
+      :style="{ height: '60%' }"
+      teleport="body"
+    >
+      <van-form @submit="onSubmit">
+        <van-field name="num" label="课时">
+          <template #input>
+            <van-stepper v-model="num" />
+          </template>
+        </van-field>
+
+        <van-field
+          v-model="desc"
+          name="desc"
+          label="备注"
+          placeholder="请填写备注"
+        />
+
+        <div style="margin: 16px">
+          <van-button
+            round
+            block
+            type="primary"
+            native-type="submit"
+            :disabled="loading"
+          >
+            提交
+          </van-button>
+        </div>
+      </van-form>
+    </van-popup>
   <van-empty image="error" description="暂无数据"  v-if="!all.student.length"/>
+
   <van-cell-group v-else>
     <van-cell :title="i.name"  v-for="i of all.student" :key="i.id"/>
   </van-cell-group>
@@ -10,19 +44,43 @@
 <script lang="ts">
 import { getStudentList } from '@root/common/api/student'
 import { IStudent } from '@root/common/const/type/student'
-import { Cell, CellGroup, Empty } from 'vant'
-import { defineComponent, reactive, watch } from 'vue'
+import { ISign } from '@root/common/const/type/student-operation'
+import { sign } from '@root/common/api/student-operation'
+import {
+  Button,
+  Cell,
+  CellGroup,
+  Empty,
+  Field,
+  Form,
+  Stepper,
+  Toast
+} from 'vant'
+import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
+import { useStore } from 'vuex'
 export default defineComponent({
   name: 'Student',
   props: {
     ids: {
       type: Array
+    },
+    courseId: {
+      type: String,
+      default: ''
+    },
+    courseName: {
+      type: String,
+      default: ''
     }
   },
 
   components: {
     [Cell.name]: Cell,
     [CellGroup.name]: CellGroup,
+    [Button.name]: Button,
+    [Stepper.name]: Stepper,
+    [Form.name]: Form,
+    [Field.name]: Field,
     [Empty.name]: Empty
   },
 
@@ -33,6 +91,69 @@ export default defineComponent({
     }>({
       student: []
     })
+
+    const show = ref(false)
+    const loading = ref(false)
+    const currentId = ref('')
+    const store = useStore()
+
+    const data = reactive({
+      num: 0,
+      desc: ''
+    })
+
+    const showPopup = (id: string) => {
+      currentId.value = id
+      show.value = true
+    }
+
+    async function onSubmit (values: { num: number; desc: string }) {
+      if (loading.value) {
+        return
+      }
+      console.log('submit', values)
+      const teacherId = store.state.oauth.userid
+      if (!values.num) {
+        Toast('请填写课时')
+        return
+      }
+      if (!teacherId) {
+        Toast('没有教师id')
+        return
+      }
+
+      loading.value = true
+
+      try {
+        const params: ISign = {
+          courseName: props.courseName,
+          desc: values.desc,
+          num: values.num,
+          studentId: currentId.value,
+          teacherId: teacherId,
+          course: [
+            {
+              id: props.courseId,
+              name: props.courseName,
+              count: values.num
+            }
+          ]
+        }
+
+        const { data: { data: result } } = await sign(params)
+        const { studentPackage, templateMsg } = result
+        const str = (studentPackage.ok === 1 && studentPackage.n !== 0) ? '签到成功,成功扣除课时' : '签到失败,扣除课时失败'
+        const total: number = templateMsg.reduce((tatal: number, item: {
+          errcode: number;
+        }) => {
+          return item.errcode === 0 ? tatal + 1 : tatal
+        }, 0)
+        Toast(`${str}, 成功推送微信消息${total}条`)
+        loading.value = false
+      } catch (error) {
+        loading.value = false
+      }
+    }
 
     // 正式学员
     async function fetchStudent (ids: string[]) {
@@ -70,7 +191,14 @@ export default defineComponent({
       }
     )
 
-    return { all }
+    return {
+      ...toRefs(data),
+      all,
+      show,
+      loading,
+      onSubmit,
+      showPopup
+    }
   }
 })
 </script>
