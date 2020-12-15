@@ -26,9 +26,14 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/form',
-    name: 'Form',
-    component: () => import(/* webpackChunkName: "form" */ '@/views/form/index.vue')
+    path: '/student-record',
+    name: 'StudentRecord',
+    component: () => import(/* webpackChunkName: "StudentRecord" */ '@/views/record/student/index.vue')
+  },
+  {
+    path: '/trial-student-record',
+    name: 'TrialStudentRecord',
+    component: () => import(/* webpackChunkName: "TrialStudentRecord" */ '@/views/record/trial-student/index.vue')
   },
   {
     path: '/course-list',

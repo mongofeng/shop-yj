@@ -25,9 +25,9 @@
     </van-cell-group>
 
     <van-cell-group>
-      <van-cell icon="points" title="我的积分" is-link />
-      <van-cell icon="gold-coin-o" title="我的优惠券" is-link />
-      <van-cell icon="gift-o" title="我收到的礼物" is-link />
+      <van-cell icon="points" title="学生课时" is-link  to="/student-record"/>
+      <van-cell icon="gold-coin-o" title="试课学生课时" is-link to="'/trial-student-record'"/>
+      <!-- <van-cell icon="gift-o" title="我收到的礼物" is-link /> -->
     </van-cell-group>
   </div>
 </template>
