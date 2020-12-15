@@ -20,6 +20,7 @@ import { IHour } from '@root/common/const/type/hour'
 import { Cell, List } from 'vant'
 import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
 import { useStore } from 'vuex'
+import dayjs from 'dayjs'
 export default defineComponent({
   name: 'StudentRecordItem',
 
@@ -92,7 +93,8 @@ export default defineComponent({
     })
 
     function formateType (i: IHour) {
-      return COURSE_HOUR_ACTION_TYPE_LABEL[i.type]
+      const time = dayjs(i.createDate).format('YYYY年MMDD HH:mm') // '25/01/2019'
+      return COURSE_HOUR_ACTION_TYPE_LABEL[i.type] + ' ' + time
     }
 
     return { ...toRefs(data), loadList, ...toRefs(studentMap), formateType }

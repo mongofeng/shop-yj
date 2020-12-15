@@ -17,6 +17,7 @@ import { compositionList } from '@root/common/composition/list'
 import { COURSE_HOUR_ACTION_TYPE_LABEL } from '@root/common/const/enum'
 import { IHour } from '@root/common/const/type/hour'
 import { TrialCourseRecord } from '@root/common/const/type/trial-course-record'
+import dayjs from 'dayjs'
 import { Cell, List } from 'vant'
 import { defineComponent, reactive, toRefs, watchEffect } from 'vue'
 import { useStore } from 'vuex'
@@ -92,7 +93,8 @@ export default defineComponent({
     })
 
     function formateType (i: IHour) {
-      return COURSE_HOUR_ACTION_TYPE_LABEL[i.type]
+      const time = dayjs(i.createDate).format('YYYY年MMDD HH:mm') // '25/01/2019'
+      return COURSE_HOUR_ACTION_TYPE_LABEL[i.type] + ' ' + time
     }
 
     return { ...toRefs(data), loadList, ...toRefs(studentMap), formateType }
