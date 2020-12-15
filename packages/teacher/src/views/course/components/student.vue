@@ -37,7 +37,7 @@
   <van-empty image="error" description="暂无数据"  v-if="!all.student.length"/>
 
   <van-cell-group v-else>
-    <van-cell :title="i.name"  v-for="i of all.student" :key="i.id"/>
+    <van-cell :title="i.name"  v-for="i of all.student" :key="i.id" @click="showPopup(i.id)" is-link/>
   </van-cell-group>
  </div>
 </template>
@@ -54,10 +54,11 @@ import {
   Empty,
   Field,
   Form,
+  Popup,
   Stepper,
   Toast
 } from 'vant'
-import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
+import { defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 import { getHourrList } from '@root/common/api/hour'
 export default defineComponent({
@@ -83,6 +84,7 @@ export default defineComponent({
     [Stepper.name]: Stepper,
     [Form.name]: Form,
     [Field.name]: Field,
+    [Popup.name]: Popup,
     [Empty.name]: Empty
   },
 
@@ -213,16 +215,11 @@ export default defineComponent({
       all.student = list
     }
 
-    // fetch the user information when params change
-    watch(
-      () => props.ids,
-      async (newParams: any) => {
-        return fetchStudent(newParams.ids)
-      },
-      {
-        immediate: true
+    onMounted(() => {
+      if (props.ids) {
+        fetchStudent(props.ids as string[])
       }
-    )
+    })
 
     return {
       ...toRefs(data),

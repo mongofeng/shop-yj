@@ -67,10 +67,11 @@ import {
   Empty,
   Field,
   Form,
+  Popup,
   Stepper,
   Toast
 } from 'vant'
-import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
+import { defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
 export default defineComponent({
   name: 'TrialStudent',
@@ -95,6 +96,7 @@ export default defineComponent({
     [Stepper.name]: Stepper,
     [Form.name]: Form,
     [Field.name]: Field,
+    [Popup.name]: Popup,
     [Empty.name]: Empty
   },
 
@@ -225,15 +227,21 @@ export default defineComponent({
     }
 
     // fetch the user information when params change
-    watch(
-      () => props.ids,
-      async (newParams: any) => {
-        return fetchTrialStudent(newParams.ids)
-      },
-      {
-        immediate: true
+    // watch(
+    //   () => props.ids,
+    //   async (newParams: any) => {
+    //     return fetchTrialStudent(newParams.ids)
+    //   },
+    //   {
+    //     immediate: true
+    //   }
+    // )
+
+    onMounted(() => {
+      if (props.ids) {
+        fetchTrialStudent(props.ids as string[])
       }
-    )
+    })
 
     return {
       ...toRefs(data),

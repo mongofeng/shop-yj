@@ -1,6 +1,8 @@
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
+import { Toast } from 'vant'
+
 export const accessTokenName = 'Authorization'
 
 // const codeMessage = {
@@ -34,7 +36,26 @@ http.interceptors.response.use(
   (response: AxiosResponse) => {
     return response
   },
-  (error: AxiosError) => {
+  (error: AxiosError<{data: any}>) => {
+    const response = error.response
+    console.log(response)
+    let description = '请求错误'
+    if (response && typeof response.data === 'string') {
+      description = response.data
+    } else if (response && typeof response.data === 'object') {
+      // {"msg":"课程包为空","code":null}
+      // {"timestamp":"2020-12-14T06:10:09.240+0000","status":500,"error":"Internal Server Error","message":"No message available","path":"/trial-course-record/supplement"}
+      const {
+        message,
+        err: errMsg,
+        error: err,
+        msg
+      } = response.data as any
+
+      description = message || (errMsg && errMsg.desc) || err || msg || '未知请求错误'
+    }
+
+    Toast(description)
     return Promise.reject(error)
   }
 )

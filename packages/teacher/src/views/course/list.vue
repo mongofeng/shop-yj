@@ -28,7 +28,7 @@
 import { defineComponent, toRefs } from 'vue'
 import { compositionList } from '@root/common/composition/list'
 import * as api from '@root/common/api/course'
-import { List, Card, NoticeBar } from 'vant'
+import { List, NoticeBar, Cell } from 'vant'
 import { useRouter } from 'vue-router'
 import { COURSE_STATUS } from '@root/common/const/enum'
 import { useStore } from 'vuex'
@@ -39,7 +39,7 @@ export default defineComponent({
   components: {
     [List.name]: List,
     [NoticeBar.name]: NoticeBar,
-    [Card.name]: Card
+    [Cell.name]: Cell
   },
 
   setup () {
@@ -67,7 +67,7 @@ export default defineComponent({
         return
       }
       router.push({
-        name: 'Good',
+        name: 'CourseDetail',
         params: {
           id: info._id
         }
@@ -76,7 +76,7 @@ export default defineComponent({
 
     function getStudent (info: ICourse) {
       const total = (info.studentIds && info.studentIds.length) + (info.trialStudentIds && info.trialStudentIds.length)
-      return `${total}学生`
+      return `${total}位学生`
     }
     return { ...toRefs(data), loadList, onTap, getStudent }
   }
