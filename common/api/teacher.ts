@@ -1,5 +1,5 @@
 import { ITeacher } from '../const/type/teacher'
-import { ApiListData, ApiResponse } from '../types/api'
+import { ApiListData, ApiResponse } from '../const/api'
 import { QueryCondition } from '../types/d/global'
 import http from '../utils/http'
 

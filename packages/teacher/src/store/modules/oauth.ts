@@ -107,7 +107,7 @@ const actions = {
       }
     }
 
-    if (first.state !== TEACHER_STATUS.InService) {
+    if (first.status !== TEACHER_STATUS.InService) {
       return {
         message: '改账号已被冻结',
         state: false

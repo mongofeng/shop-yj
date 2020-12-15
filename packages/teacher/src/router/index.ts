@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BottomBar from '@/components/bottom-bar.vue'
 import User from '@/views/user/index.vue'
-import CourseList from '@/views/course/index.vue'
+import CourseList from '@/views/course/list.vue'
 import CourseDetail from '@/views/course/detail.vue'
 
 const routes: Array<RouteRecordRaw> = [
