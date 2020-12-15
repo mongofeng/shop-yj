@@ -130,7 +130,7 @@ export default defineComponent({
         page: 1,
         limit: 1,
         query: {
-          courseId: props.courseId,
+          // courseId: props.courseId,
           studentId: currentId.value,
           createDate: {
             $gte: date.toISOString()

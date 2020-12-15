@@ -1,6 +1,7 @@
 import { IStudentHour } from '../const/type/student-hour'
 import { ApiListData, ApiResponse } from '../const/api'
 import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
 
 /**
  *

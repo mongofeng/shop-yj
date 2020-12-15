@@ -7,7 +7,7 @@
       :style="{ height: '60%' }"
       teleport="body"
     >
-      <van-form @submit="onSubmit">
+      <van-form @submit="onConfirm">
         <van-field name="num" label="课时">
           <template #input>
             <van-stepper v-model="num" />
@@ -50,6 +50,7 @@ import {
   Button,
   Cell,
   CellGroup,
+  Dialog,
   Empty,
   Field,
   Form,
@@ -58,6 +59,7 @@ import {
 } from 'vant'
 import { defineComponent, reactive, ref, toRefs, watch } from 'vue'
 import { useStore } from 'vuex'
+import { getHourrList } from '@root/common/api/hour'
 export default defineComponent({
   name: 'Student',
   props: {
@@ -96,6 +98,7 @@ export default defineComponent({
     const loading = ref(false)
     const currentId = ref('')
     const store = useStore()
+    const teacherId = store.state.oauth.userid
 
     const data = reactive({
       num: 0,
@@ -107,12 +110,58 @@ export default defineComponent({
       show.value = true
     }
 
+    async function getRecord () {
+      const date = new Date()
+      date.setHours(0)
+      date.setMinutes(0)
+      const { data: { data: { count } } } = await getHourrList({
+        page: 1,
+        limit: 1,
+        query: {
+          studentId: currentId.value,
+          createDate: {
+            $gte: date.toISOString()
+          }
+        },
+        sort: {
+          createDate: -1
+        }
+      })
+      return count > 0
+    }
+
     async function onSubmit (values: { num: number; desc: string }) {
+      const params: ISign = {
+        courseName: props.courseName,
+        desc: values.desc,
+        num: values.num,
+        studentId: currentId.value,
+        teacherId: teacherId,
+        course: [
+          {
+            id: props.courseId,
+            name: props.courseName,
+            count: values.num
+          }
+        ]
+      }
+
+      const { data: { data: result } } = await sign(params)
+      const { studentPackage, templateMsg } = result
+      const str = (studentPackage.ok === 1 && studentPackage.n !== 0) ? '签到成功,成功扣除课时' : '签到失败,扣除课时失败'
+      const total: number = templateMsg.reduce((tatal: number, item: {
+          errcode: number;
+        }) => {
+        return item.errcode === 0 ? tatal + 1 : tatal
+      }, 0)
+      Toast(`${str}, 成功推送微信消息${total}条`)
+    }
+
+    async function onConfirm (values: { num: number; desc: string }) {
       if (loading.value) {
         return
       }
-      console.log('submit', values)
-      const teacherId = store.state.oauth.userid
+
       if (!values.num) {
         Toast('请填写课时')
         return
@@ -121,34 +170,18 @@ export default defineComponent({
         Toast('没有教师id')
         return
       }
-
       loading.value = true
 
       try {
-        const params: ISign = {
-          courseName: props.courseName,
-          desc: values.desc,
-          num: values.num,
-          studentId: currentId.value,
-          teacherId: teacherId,
-          course: [
-            {
-              id: props.courseId,
-              name: props.courseName,
-              count: values.num
-            }
-          ]
+        const ret = await getRecord()
+        if (ret) {
+          await Dialog.confirm({
+            title: '警告',
+            message: '该生今天已经有一个签到记录，是否继续签到？'
+          })
         }
 
-        const { data: { data: result } } = await sign(params)
-        const { studentPackage, templateMsg } = result
-        const str = (studentPackage.ok === 1 && studentPackage.n !== 0) ? '签到成功,成功扣除课时' : '签到失败,扣除课时失败'
-        const total: number = templateMsg.reduce((tatal: number, item: {
-          errcode: number;
-        }) => {
-          return item.errcode === 0 ? tatal + 1 : tatal
-        }, 0)
-        Toast(`${str}, 成功推送微信消息${total}条`)
+        await onSubmit(values)
         loading.value = false
       } catch (error) {
         loading.value = false
@@ -196,7 +229,7 @@ export default defineComponent({
       all,
       show,
       loading,
-      onSubmit,
+      onConfirm,
       showPopup
     }
   }

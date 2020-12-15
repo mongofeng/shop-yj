@@ -1,6 +1,7 @@
 import { IHour } from '../const/type/hour'
 import { ApiListData, ApiResponse } from '../const/api'
 import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
 
 interface Iresult {
     templateMsg: {
