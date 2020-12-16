@@ -12,7 +12,11 @@ module.exports = {
     filename: '[name]-[hash:8].js'
   },
   resolve: {
-    extensions: ['.ts', 'tsx', '.js']
+    extensions: ['.ts', 'tsx', '.js'],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@root': path.resolve(__dirname, '../../')
+    }
   },
   // 这里可以配置一些对指定文件的处理
   // 这里匹配后缀为ts或者tsx的文件
