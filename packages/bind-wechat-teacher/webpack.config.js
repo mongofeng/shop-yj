@@ -5,11 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 const path = require('path')
 
-console.log(process.env.NODE_ENV)
-
+const isProd = process.env.NODE_ENV === 'production'
+console.log(process.env.NODE_ENV, isProd)
 const config = {
   NODE_ENV: process.env.NODE_ENV,
   VUE_APP_API_SERVER: '/v2/'
+}
+
+const cdn = {
+  js: ['https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.min.js']
 }
 
 // 使用node的模块
@@ -19,6 +23,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name][hash].js'
+  },
+  externals: {
+    // 包名： 全局变量
+    axios: 'axios'
   },
   resolve: {
     extensions: ['.ts', 'tsx', '.js'],
@@ -39,12 +47,12 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader']
+        use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader']
       }
     ]
   },
   // 这个参数就可以在webpack中获取到了
-  devtool: process.env.NODE_ENV === 'production' ? false : 'inline-source-map',
+  devtool: isProd ? false : 'inline-source-map',
   devServer: {
     // 这个本地开发环境运行时是基于哪个文件夹作为根目录
     contentBase: './dist',
@@ -87,7 +95,8 @@ module.exports = {
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')]
     }),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: './public/index.html',
+      cdn: isProd ? cdn : {}
     })
   ]
 }
