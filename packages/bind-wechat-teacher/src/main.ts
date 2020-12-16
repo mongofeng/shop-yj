@@ -97,7 +97,8 @@ async function bindTeacherWechat () {
     _id: localStorage.getItem('state') || '',
     openId: localStorage.getItem('openid') || ''
   }
-  return bindWechat(params)
+  await bindWechat(params)
+  success()
 }
 
 async function main () {
@@ -106,7 +107,6 @@ async function main () {
     console.log(ret)
     if (ret) {
       await bindTeacherWechat()
-      success()
     }
   } catch (error) {
     showError('网络错误')
