@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const webpack = require('webpack')
 const path = require('path')
 
 console.log(process.env.NODE_ENV)
+
+const config = {
+  NODE_ENV: process.env.NODE_ENV,
+  VUE_APP_API_SERVER: '/v2/'
+}
 // 使用node的模块
 module.exports = {
   // 这就是我们项目编译的入口文件
@@ -45,10 +51,30 @@ module.exports = {
     // 不启动压缩
     compress: false,
     host: 'localhost',
-    port: 8081
+    proxy: {
+      '/wechatV2': {
+        target: process.env.API,
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: { // 改变路径重定向
+          '^/wechatV2': '/wechat'
+        }
+      },
+      '/v2': {
+        target: process.env.API,
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: { // 改变路径重定向
+          '^/v2': '/'
+        }
+      }
+
+    },
+    port: 8080
   },
   // 这里就是一些插件
   plugins: [
+    new webpack.DefinePlugin({ 'process.env': JSON.stringify(config) }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')]
     }),
