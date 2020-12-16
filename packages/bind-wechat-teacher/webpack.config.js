@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
 
@@ -93,6 +94,11 @@ module.exports = {
     }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')]
+    }),
+    new CompressionPlugin({
+      test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
+      threshold: 10240,
+      minRatio: 0.8
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
