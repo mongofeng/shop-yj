@@ -2,6 +2,7 @@
 import * as enums from '../enum'
 export interface ITeacher {
   readonly _id?: string;
+  id?: string;
   name: string;
   birthday: string;
   sex: enums.ESEX;

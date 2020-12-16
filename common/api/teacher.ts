@@ -15,6 +15,14 @@ export function addteacher (params: ITeacher) {
  *
  * @param params 查询参数
  */
+export function bindWechat (params: Partial<ITeacher>) {
+  return http.post('teacher/bind-wechat', params)
+}
+
+/**
+ *
+ * @param params 查询参数
+ */
 export function getteacherList (params: QueryCondition<ITeacher>): ApiListData<Required<ITeacher>> {
   return http.post('teacher/list', params)
 }
