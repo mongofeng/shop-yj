@@ -7,7 +7,7 @@
   <title>杨瑾美术</title>
   <% for (var i in
       htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
-    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"  defer></script>
+    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"  async crossorigin="anonymous"></script>
     <% } %>
 
     
