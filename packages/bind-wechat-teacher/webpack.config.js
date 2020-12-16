@@ -9,6 +9,7 @@ module.exports = {
   // 这就是我们项目编译的入口文件
   entry: path.resolve(__dirname, './src/main.ts'),
   output: {
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name]-[hash:8].js'
   },
   resolve: {
@@ -27,6 +28,10 @@ module.exports = {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
