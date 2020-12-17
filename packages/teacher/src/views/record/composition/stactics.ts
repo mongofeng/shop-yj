@@ -68,6 +68,7 @@ export function getStatistics (collectionName: string) {
       ]
     })
     console.log(data)
+    if (!data.length) { return }
     statistics.today = data[0].count
   }
 
@@ -80,6 +81,7 @@ export function getStatistics (collectionName: string) {
       ]
     })
     console.log(data)
+    if (!data.length) { return }
     statistics.month = data[0].count
   }
 
@@ -92,6 +94,7 @@ export function getStatistics (collectionName: string) {
       ]
     })
     console.log(data)
+    if (!data.length) { return }
     statistics.all = data[0].count
   }
 

@@ -28,6 +28,7 @@ export function compositionList (func: any) {
       data.count = count
       data.page += 1
       data.list = data.list.concat(list)
+      console.log(data.count)
     } finally {
       data.loading = false
     }
