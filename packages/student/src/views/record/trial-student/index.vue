@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <van-sticky>
-      <van-row>
-        <van-col span="8">
-          <div class="label">
-            {{ today }}
-          </div>
-          <div class="text">今天课时</div>
-        </van-col>
-        <van-col span="8">
-          <div class="label">
-            {{ month }}
-          </div>
-          <div class="text">本月课时</div>
-        </van-col>
-        <van-col span="8">
-          <div class="label">
-            {{ all }}
-          </div>
-          <div class="text">总课时</div>
-        </van-col>
-      </van-row>
-    </van-sticky>
-    <van-tabs v-model:active="active">
+ <div>
+   <van-row>
+      <van-col span="8">
+        <div class="label">
+          {{ today }}
+        </div>
+        <div class="text">今天课时</div>
+      </van-col>
+      <van-col span="8">
+        <div class="label">
+          {{ month }}
+        </div>
+        <div class="text">本月课时</div>
+      </van-col>
+      <van-col span="8">
+        <div class="label">
+          {{ all }}
+        </div>
+        <div class="text">总课时</div>
+      </van-col>
+    </van-row>
+   <van-tabs v-model:active="active">
       <van-tab title="今天">
         <TrialStudentRecordItem type="today"></TrialStudentRecordItem>
       </van-tab>
@@ -33,10 +31,10 @@
         <TrialStudentRecordItem type="all"></TrialStudentRecordItem>
       </van-tab>
     </van-tabs>
-  </div>
+ </div>
 </template>
 <script lang="ts">
-import { Col, Row, Sticky, Tab, Tabs } from 'vant'
+import { Col, Row, Tab, Tabs } from 'vant'
 import { getStatistics } from '../composition/stactics'
 import { defineComponent, ref, toRefs } from 'vue'
 import TrialStudentRecordItem from './components/trial-student.vue'
@@ -48,7 +46,6 @@ export default defineComponent({
     [Tabs.name]: Tabs,
     [Col.name]: Col,
     [Row.name]: Row,
-    [Sticky.name]: Sticky,
     TrialStudentRecordItem: TrialStudentRecordItem
   },
 
