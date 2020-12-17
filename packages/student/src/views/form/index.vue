@@ -12,12 +12,19 @@
         readonly
         clickable
         name="birthday"
-        :value="data.birthday"
+        v-model="data.birthday"
         label="生日"
         placeholder="请填写生日"
-        @click="showCalendar = true"
+        @click="showPicker = true"
       />
-      <van-calendar v-model="showCalendar" @confirm="onConfirm" />
+
+      <van-popup v-model:show="showPicker" position="bottom">
+        <van-datetime-picker
+          type="date"
+          @confirm="onConfirm"
+          @cancel="showPicker = false"
+        />
+      </van-popup>
 
       <van-field name="radio" label="性别">
         <template #input>
@@ -48,7 +55,7 @@
         readonly
         clickable
         name="area"
-        :value="address"
+        v-model="address"
         label="地区选择"
         placeholder="点击选择省市区"
         @click="showArea = true"
@@ -93,7 +100,8 @@ import {
   RadioGroup,
   Radio,
   Popup,
-  Area
+  Area,
+  DatetimePicker
 } from 'vant'
 import * as api from '@root/common/api/trial-student'
 import { useStore } from 'vuex'
@@ -113,6 +121,7 @@ export default defineComponent({
     [Popup.name]: Popup,
     [Area.name]: Area,
     [Form.name]: Form,
+    [DatetimePicker.name]: DatetimePicker,
     [Field.name]: Field
   },
 
@@ -124,7 +133,7 @@ export default defineComponent({
 
     const loading = ref(false)
 
-    const showCalendar = ref(false)
+    const showPicker = ref(false)
     const showArea = ref(false)
 
     console.log(store.state.oauth.openid)
@@ -149,7 +158,8 @@ export default defineComponent({
 
     function onConfirm (date: Date) {
       data.birthday = dayjs(date).format('YYYY-MM-DD')
-      showCalendar.value = false
+      console.log(date)
+      showPicker.value = false
     }
 
     const obj = [
@@ -222,11 +232,14 @@ export default defineComponent({
       loading,
       address,
       showArea,
-      showCalendar,
+      showPicker,
       onAreaConfirm,
       onSubmit,
       areaList,
-      onConfirm
+      onConfirm,
+      max: dayjs().toDate(),
+      defaultDate: new Date(2010, 1, 1),
+      min: new Date(1980, 1, 1)
     }
   }
 })

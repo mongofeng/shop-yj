@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   province_list: {
     110000: '北京市',
