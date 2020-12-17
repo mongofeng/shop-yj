@@ -3,6 +3,7 @@ import BottomBar from '@/components/bottom-bar.vue'
 import User from '@/views/user/index.vue'
 import CourseList from '@/views/course/list.vue'
 import CourseDetail from '@/views/course/detail.vue'
+import Form from '@/views/form/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
 
@@ -16,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '会员中心'
     }
+  },
+  {
+    path: '/form',
+    name: 'Form',
+    component: Form
   },
   {
     path: '/course/:id',

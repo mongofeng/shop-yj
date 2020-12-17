@@ -19,7 +19,7 @@ export default defineComponent({
   },
 
   setup () {
-    const { showError, loading, info } = oauthWechat('CourseList')
+    const { showError, loading, info } = oauthWechat('Form')
     return { showError, loading, info }
   }
 })

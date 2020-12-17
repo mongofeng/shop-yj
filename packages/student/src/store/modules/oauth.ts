@@ -82,39 +82,39 @@ const actions = {
       }
     }
 
-    const { data: { data: { list } } } = await getteacherList({
-      page: 1,
-      limit: 50,
-      query: {
-        openId: state.openid
-      }
-    })
+    // const { data: { data: { list } } } = await getteacherList({
+    //   page: 1,
+    //   limit: 50,
+    //   query: {
+    //     openId: state.openid
+    //   }
+    // })
 
-    // 判断是否正式的学生
-    if (!list || !list.length) {
-      console.warn('当前openid没有绑定')
-      return {
-        message: '当前openid没有绑定,请先在后台绑定',
-        state: false
-      }
-    }
+    // // 判断是否正式的学生
+    // if (!list || !list.length) {
+    //   console.warn('当前openid没有绑定')
+    //   return {
+    //     message: '当前openid没有绑定,请先在后台绑定',
+    //     state: false
+    //   }
+    // }
 
-    const [first] = list
-    if (!first) {
-      return {
-        message: '找不到对应的用户',
-        state: false
-      }
-    }
+    // const [first] = list
+    // if (!first) {
+    //   return {
+    //     message: '找不到对应的用户',
+    //     state: false
+    //   }
+    // }
 
-    if (first.status !== TEACHER_STATUS.InService) {
-      return {
-        message: '改账号已被冻结',
-        state: false
-      }
-    }
+    // if (first.status !== TEACHER_STATUS.InService) {
+    //   return {
+    //     message: '改账号已被冻结',
+    //     state: false
+    //   }
+    // }
 
-    commit(ADD_USERID, first._id)
+    // commit(ADD_USERID, first._id)
     return {
       message: '登录成功',
       state: true

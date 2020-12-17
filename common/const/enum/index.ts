@@ -32,10 +32,12 @@ export const USER_STATUS_LABEL: LabelMapping<USER_STATUS> = {
 export enum STUDENT_STATUS {
     reading = 1,
     graduation,
+    Review
 }
 
 export const STUDENT_STATUS_LABEL: LabelMapping<STUDENT_STATUS> = {
   [STUDENT_STATUS.reading]: '在读',
+  [STUDENT_STATUS.Review]: '审核中',
   [STUDENT_STATUS.graduation]: '毕业'
 }
 
