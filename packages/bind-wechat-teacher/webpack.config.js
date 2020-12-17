@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
+// 分析包内容
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const path = require('path')
 
@@ -85,6 +87,8 @@ module.exports = {
   },
   // 这里就是一些插件
   plugins: [
+    // 开启 BundleAnalyzerPlugin
+    new BundleAnalyzerPlugin(),
     new webpack.DefinePlugin({ 'process.env': JSON.stringify(config) }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
@@ -104,5 +108,9 @@ module.exports = {
       template: './public/index.html',
       cdn: isProd ? cdn : {}
     })
-  ]
+  ],
+  optimization: {
+    // webpack4 在 production 环境下默认启动了 ModuleConcatenationPlugin （预编译所有模块到一个闭包中，提升代码在浏览器中的执行速度），它可能会合并webpack-bundle-analyzer 输出中的模块的一部分，从而使报告不太详细。 如果你使用此插件，请在分析过程中将其禁用
+    concatenateModules: false
+  }
 }

@@ -1,7 +1,7 @@
 
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { Toast } from 'vant'
+// import { Toast } from 'vant'
 
 export const accessTokenName = 'Authorization'
 
@@ -55,7 +55,7 @@ http.interceptors.response.use(
       description = message || (errMsg && errMsg.desc) || err || msg || '未知请求错误'
     }
 
-    Toast(description)
+    alert(description)
     return Promise.reject(error)
   }
 )
