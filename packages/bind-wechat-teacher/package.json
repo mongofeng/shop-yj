@@ -6,7 +6,8 @@
   "scripts": {
     "test": "tsc --init",
     "start": "cross-env API=http://127.0.0.1:8110 webpack serve --mode development --env development",
-    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js"
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js",
+    "build-analy": "cross-env NODE_ENV=production analy=true webpack"
   },
   "keywords": [],
   "author": "",
