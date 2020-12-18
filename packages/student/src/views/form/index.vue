@@ -221,7 +221,7 @@ export default defineComponent({
           ...data,
           openId: [store.state.oauth.openid]
         })
-        Toast.success('添加成功')
+        // Toast.success('添加成功')
         router.replace({ name: 'Success' })
 
         loading.value = false
