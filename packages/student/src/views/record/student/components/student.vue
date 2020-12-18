@@ -106,8 +106,5 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-.a {
-  color: red;
-  color: gray;
-}
+
 </style>
