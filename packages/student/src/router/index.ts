@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import BottomBar from '@/components/bottom-bar.vue'
 import User from '@/views/user/index.vue'
 import Form from '@/views/form/index.vue'
+import Success from '@/views/status/success.vue'
 
 const routes: Array<RouteRecordRaw> = [
 
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/form',
     name: 'Form',
     component: Form
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: Success
   },
   {
     path: '/student-record',

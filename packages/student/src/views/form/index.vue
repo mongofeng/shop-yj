@@ -62,6 +62,7 @@
       />
       <van-popup v-model:show="showArea" position="bottom">
         <van-area
+          value="440606"
           :area-list="areaList"
           @confirm="onAreaConfirm"
           @cancel="showArea = false"
@@ -105,7 +106,7 @@ import {
 } from 'vant'
 import * as api from '@root/common/api/student'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { IStudent } from '@root/common/const/type/student'
 import * as enums from '@root/common/const/enum'
 import arealist from '@root/common/data/area'
@@ -128,8 +129,6 @@ export default defineComponent({
   setup () {
     const store = useStore()
     const router = useRouter()
-
-    const route = useRoute()
 
     const loading = ref(false)
 
@@ -223,6 +222,7 @@ export default defineComponent({
           openId: [store.state.oauth.openid]
         })
         Toast.success('添加成功')
+        router.replace({ name: 'Success' })
 
         loading.value = false
       } catch (error) {
