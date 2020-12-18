@@ -12,7 +12,7 @@
         readonly
         clickable
         name="birthday"
-        v-model="data.birthday"
+        v-model="birthday"
         label="出生年月"
         placeholder="请填写出生年月"
         @click="showPicker = true"
@@ -20,7 +20,7 @@
 
       <van-popup v-model:show="showPicker" position="bottom">
         <van-datetime-picker
-          :visible-item-count="50"
+          :min-date="min"
           type="date"
           @confirm="onConfirm"
           @cancel="showPicker = false"
@@ -135,6 +135,7 @@ export default defineComponent({
 
     const showPicker = ref(false)
     const showArea = ref(false)
+    const birthday = ref('')
 
     console.log(store.state.oauth.openid)
     const areaList = reactive(arealist)
@@ -157,6 +158,8 @@ export default defineComponent({
     })
 
     function onConfirm (date: Date) {
+      birthday.value = dayjs(date).format('YYYY-MM-DD')
+      // data.birthday = date.toISOString()
       data.birthday = dayjs(date).format('YYYY-MM-DD')
       console.log(date)
       showPicker.value = false
@@ -240,7 +243,9 @@ export default defineComponent({
       onAreaConfirm,
       onSubmit,
       areaList,
-      onConfirm
+      onConfirm,
+      birthday,
+      min: dayjs(new Date(1980, 1, 1)).toDate()
     }
   }
 })
