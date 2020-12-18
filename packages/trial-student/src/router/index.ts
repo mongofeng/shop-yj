@@ -5,11 +5,16 @@ import Pay from '@/views/pay/index.vue'
 import User from '@/views/user/index.vue'
 import Shop from '@/views/shop/index.vue'
 import Share from '@/views/share/index.vue'
-
+import Success from '@/views/status/success.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/auth'
+  },
+  {
+    path: '/success',
+    name: 'Success',
+    component: Success
   },
   {
     path: '/auth',

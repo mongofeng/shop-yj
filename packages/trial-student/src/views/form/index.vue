@@ -82,11 +82,20 @@ export default defineComponent({
               studentId: data._id
             }
           })
+        } else if (route.query && route.query.routeName === 'register') {
+          router.replace({
+            name: 'Success',
+            query: {
+              ...route.query,
+              studentId: data._id
+            }
+          })
         } else {
           router.back()
         }
       } catch (error) {
         loading.value = false
+        Toast.fail('请求失败')
       }
     }
     return {
