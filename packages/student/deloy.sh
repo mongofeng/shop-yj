@@ -7,7 +7,7 @@ deloy_server=root@118.31.227.99
 deloy_root_path=/root/docker/nginx/html/
 
 # 部署的目录
-deloy_path=teacher
+deloy_path=student
 
 # 打包的目录
 build_path=dist
