@@ -20,6 +20,7 @@
 
       <van-popup v-model:show="showPicker" position="bottom">
         <van-datetime-picker
+          :visible-item-count="50"
           type="date"
           @confirm="onConfirm"
           @cancel="showPicker = false"
