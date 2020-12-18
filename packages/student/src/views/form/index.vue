@@ -13,8 +13,8 @@
         clickable
         name="birthday"
         v-model="data.birthday"
-        label="生日"
-        placeholder="请填写生日"
+        label="出生年月"
+        placeholder="请填写出生年月"
         @click="showPicker = true"
       />
 
@@ -103,7 +103,7 @@ import {
   Area,
   DatetimePicker
 } from 'vant'
-import * as api from '@root/common/api/trial-student'
+import * as api from '@root/common/api/student'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { IStudent } from '@root/common/const/type/student'
@@ -162,6 +162,17 @@ export default defineComponent({
       showPicker.value = false
     }
 
+    const validate: {
+      [key in string]: string
+    } = {
+      name: '请填写姓名',
+      phone: '请填写手机号码',
+      birthday: '请选择出生年月',
+      contacts: '请填写联系人',
+      province: '请选择省市区',
+      address: '请填写详细地址'
+    }
+
     const obj = [
       (name: string) => {
         data.province = name
@@ -191,39 +202,31 @@ export default defineComponent({
       if (loading.value) {
         return
       }
-      console.log('submit', values)
-      if (!values.name) {
-        Toast('请填写用户名')
-        return
+
+      for (const key in validate) {
+        if (key in data && !(data as any)[key]) {
+          Toast(validate[key])
+          return
+        }
       }
-      if (!values.phone) {
-        Toast('请填写手机号')
+
+      if (!store.state.oauth.openid) {
+        Toast('请重新登录')
         return
-      }
-      if (!values.age) {
-        Toast('请填写小朋友的年龄')
       }
       loading.value = true
       try {
         const {
-          data: { data }
-        } = await api.addTrialStudent({
-          ...values,
-          openId: store.state.oauth.openid
+          data: { data: ret }
+        } = await api.addStudent({
+          ...data,
+          openId: [store.state.oauth.openid]
         })
+        Toast.success('添加成功')
+
         loading.value = false
-        if (route.query && route.query.routeName === 'Pay') {
-          router.replace({
-            name: 'Pay',
-            query: {
-              ...route.query,
-              studentId: data._id
-            }
-          })
-        } else {
-          router.back()
-        }
       } catch (error) {
+        Toast.fail('添加失败')
         loading.value = false
       }
     }
@@ -236,10 +239,7 @@ export default defineComponent({
       onAreaConfirm,
       onSubmit,
       areaList,
-      onConfirm,
-      max: dayjs().toDate(),
-      defaultDate: new Date(2010, 1, 1),
-      min: new Date(1980, 1, 1)
+      onConfirm
     }
   }
 })
