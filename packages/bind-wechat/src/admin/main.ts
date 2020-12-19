@@ -14,7 +14,7 @@ async function isBindWechat () {
     page: 1,
     limit: 50,
     query: {
-      _id: localStorage.getItem('openid') || ''
+      openId: localStorage.getItem('openid') || ''
     }
   })
 
