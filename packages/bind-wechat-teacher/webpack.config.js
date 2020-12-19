@@ -5,6 +5,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CompressionPlugin = require('compression-webpack-plugin')
 // 分析包内容
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+const { entry, html } = require('./config/router')
 const webpack = require('webpack')
 const path = require('path')
 
@@ -13,27 +15,35 @@ const isAnaly = process.env.analy === 'true'
 console.log(isAnaly)
 console.log(process.env.NODE_ENV, isProd)
 
+// 代理的配置
 const config = {
   NODE_ENV: process.env.NODE_ENV,
   VUE_APP_API_SERVER: '/v2/'
 }
 
+// cdn的别名
 const cdn = {
   js: ['https://cdn.bootcdn.net/ajax/libs/axios/0.21.0/axios.min.js']
+}
+
+const externals = {
+  // 包名： 全局变量
+  axios: 'axios'
 }
 
 // 使用node的模块
 const webpackConfig = {
   // 这就是我们项目编译的入口文件
-  entry: path.resolve(__dirname, './src/main.ts'),
+  entry,
+
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name][hash].js'
   },
-  externals: {
-    // 包名： 全局变量
-    axios: 'axios'
-  },
+  // externals: {
+  //   // 包名： 全局变量
+  //   axios: 'axios'
+  // },
   resolve: {
     extensions: ['.ts', 'tsx', '.js'],
     alias: {
@@ -106,10 +116,13 @@ const webpackConfig = {
       threshold: 10240,
       minRatio: 0.8
     }),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      cdn: isProd ? cdn : {}
-    })
+    ...(html.map(i => {
+      return new HtmlWebpackPlugin({
+        template: './public/index.html',
+        cdn: isProd ? cdn : {},
+        ...i
+      })
+    }))
   ],
   optimization: {
     // webpack4 在 production 环境下默认启动了 ModuleConcatenationPlugin （预编译所有模块到一个闭包中，提升代码在浏览器中的执行速度），它可能会合并webpack-bundle-analyzer 输出中的模块的一部分，从而使报告不太详细。 如果你使用此插件，请在分析过程中将其禁用
@@ -122,6 +135,10 @@ if (isAnaly) {
     // 开启 BundleAnalyzerPlugin
     new BundleAnalyzerPlugin()
   )
+}
+
+if (isProd) {
+  webpackConfig.externals = externals
 }
 
 module.exports = webpackConfig
