@@ -35,10 +35,17 @@ export default defineComponent({
         if (ret) { // 跳转
           const id = store.state.oauth.state
           if (id) {
-            router.replace({
-              name: 'Good',
-              params: { id }
-            })
+            if (id === 'register') {
+              router.replace({
+                name: 'Form',
+                query: { routeName: 'register' }
+              })
+            } else {
+              router.replace({
+                name: 'Good',
+                params: { id }
+              })
+            }
           } else {
             router.replace({
               name: 'Shop'

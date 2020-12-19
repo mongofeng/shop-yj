@@ -43,10 +43,10 @@ export default defineComponent({
       dict: new Map()
     })
     const store = useStore()
-    const teacherId = store.state.oauth.userid
+    const studentId = store.state.oauth.userid
 
     data.query = {
-      teacherId: teacherId
+      studentId: studentId
     }
 
     if (props.type === 'today') {
@@ -106,8 +106,5 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-.a {
-  color: red;
-  color: gray;
-}
+
 </style>

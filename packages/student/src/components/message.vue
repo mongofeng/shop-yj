@@ -8,12 +8,12 @@
         <div class="sa-fix"></div>
       </div>
 
-    <div class="status-icon sa-warning pulseWarning" v-if="type === 'warn'">
+    <div class="status-icon sa-warning pulseWarning" v-else-if="type === 'warn'">
       <span class="sa-body pulseWarningIns"></span>
       <span class="sa-dot pulseWarningIns"></span>
     </div>
 
-    <div class="status-icon sa-error animateErrorIcon" v-if="type === 'error'">
+    <div class="status-icon sa-error animateErrorIcon" v-else-if="type === 'error'">
       <span class="sa-x-mark animateXMark">
         <span class="sa-line sa-left"></span>
         <span class="sa-line sa-right"></span>

@@ -12,12 +12,20 @@
         readonly
         clickable
         name="birthday"
-        :value="data.birthday"
-        label="生日"
-        placeholder="请填写生日"
-        @click="showCalendar = true"
+        v-model="birthday"
+        label="出生年月"
+        placeholder="请填写出生年月"
+        @click="showPicker = true"
       />
-      <van-calendar v-model="showCalendar" @confirm="onConfirm" />
+
+      <van-popup v-model:show="showPicker" position="bottom">
+        <van-datetime-picker
+          :min-date="min"
+          type="date"
+          @confirm="onConfirm"
+          @cancel="showPicker = false"
+        />
+      </van-popup>
 
       <van-field name="radio" label="性别">
         <template #input>
@@ -48,13 +56,14 @@
         readonly
         clickable
         name="area"
-        :value="address"
+        v-model="address"
         label="地区选择"
         placeholder="点击选择省市区"
         @click="showArea = true"
       />
       <van-popup v-model:show="showArea" position="bottom">
         <van-area
+          value="440606"
           :area-list="areaList"
           @confirm="onAreaConfirm"
           @cancel="showArea = false"
@@ -83,7 +92,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import {
   Button,
   Form,
@@ -93,11 +102,12 @@ import {
   RadioGroup,
   Radio,
   Popup,
-  Area
+  Area,
+  DatetimePicker
 } from 'vant'
-import * as api from '@root/common/api/trial-student'
+import * as api from '@root/common/api/student'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { IStudent } from '@root/common/const/type/student'
 import * as enums from '@root/common/const/enum'
 import arealist from '@root/common/data/area'
@@ -113,6 +123,7 @@ export default defineComponent({
     [Popup.name]: Popup,
     [Area.name]: Area,
     [Form.name]: Form,
+    [DatetimePicker.name]: DatetimePicker,
     [Field.name]: Field
   },
 
@@ -120,12 +131,11 @@ export default defineComponent({
     const store = useStore()
     const router = useRouter()
 
-    const route = useRoute()
-
     const loading = ref(false)
 
-    const showCalendar = ref(false)
+    const showPicker = ref(false)
     const showArea = ref(false)
+    const birthday = ref('')
 
     console.log(store.state.oauth.openid)
     const areaList = reactive(arealist)
@@ -148,8 +158,22 @@ export default defineComponent({
     })
 
     function onConfirm (date: Date) {
+      birthday.value = dayjs(date).format('YYYY-MM-DD')
+      // data.birthday = date.toISOString()
       data.birthday = dayjs(date).format('YYYY-MM-DD')
-      showCalendar.value = false
+      console.log(date)
+      showPicker.value = false
+    }
+
+    const validate: {
+      [key in string]: string
+    } = {
+      name: '请填写姓名',
+      phone: '请填写手机号码',
+      birthday: '请选择出生年月',
+      contacts: '请填写联系人',
+      province: '请选择省市区',
+      address: '请填写详细地址'
     }
 
     const obj = [
@@ -181,39 +205,32 @@ export default defineComponent({
       if (loading.value) {
         return
       }
-      console.log('submit', values)
-      if (!values.name) {
-        Toast('请填写用户名')
-        return
+
+      for (const key in validate) {
+        if (key in data && !(data as any)[key]) {
+          Toast(validate[key])
+          return
+        }
       }
-      if (!values.phone) {
-        Toast('请填写手机号')
+
+      if (!store.state.oauth.openid) {
+        Toast('请重新登录')
         return
-      }
-      if (!values.age) {
-        Toast('请填写小朋友的年龄')
       }
       loading.value = true
       try {
         const {
-          data: { data }
-        } = await api.addTrialStudent({
-          ...values,
-          openId: store.state.oauth.openid
+          data: { data: ret }
+        } = await api.addStudent({
+          ...data,
+          openId: [store.state.oauth.openid]
         })
+        // Toast.success('添加成功')
+        router.replace({ name: 'Success' })
+
         loading.value = false
-        if (route.query && route.query.routeName === 'Pay') {
-          router.replace({
-            name: 'Pay',
-            query: {
-              ...route.query,
-              studentId: data._id
-            }
-          })
-        } else {
-          router.back()
-        }
       } catch (error) {
+        Toast.fail('添加失败')
         loading.value = false
       }
     }
@@ -222,11 +239,13 @@ export default defineComponent({
       loading,
       address,
       showArea,
-      showCalendar,
+      showPicker,
       onAreaConfirm,
       onSubmit,
       areaList,
-      onConfirm
+      onConfirm,
+      birthday,
+      min: dayjs(new Date(1980, 1, 1)).toDate()
     }
   }
 })
