@@ -1,24 +1,20 @@
-# yj-shop
-
-## Project setup
+--use-workspaces
+Enables integration with Yarn Workspaces (available since yarn@0.27+). The values in the array are the commands in which Lerna will delegate operation to Yarn (currently only bootstrapping). If --use-workspaces is true then packages will be overridden by the value from package.json/workspaces. May also be configured in lerna.json:
 ```
-npm install
+{
+  ...
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}
 ```
-
-### Compiles and hot-reloads for development
+The root-level package.json must also include a workspaces array:
 ```
-npm run serve
+{
+  "private": true,
+  "devDependencies": {
+    "lerna": "^2.2.0"
+  },
+  "workspaces": ["packages/*"]
+}
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This list is broadly similar to lerna's packages config (a list of globs matching directories with a package.json), except it does not support recursive globs ("**", a.k.a. "globstars").

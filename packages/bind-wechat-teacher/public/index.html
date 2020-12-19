@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>杨瑾美术</title>
+  
+
+    
+</head>
+
+<body>
+  <!-- <%= JSON.stringify(htmlWebpackPlugin.options.cdn) %> -->
+  <div class="loading show" id="loading">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div id="success" class="hide">
+    <div class="status-icon sa-success animate">
+      <span class="sa-line sa-tip animateSuccessTip"></span>
+      <span class="sa-line sa-long animateSuccessLong"></span>
+
+      <div class="sa-placeholder"></div>
+      <div class="sa-fix"></div>
+    </div>
+    <h2>绑定微信成功</h2>
+  </div>
+
+
+
+  <div id="warn" class="hide">
+    <div class="status-icon sa-warning pulseWarning" style="display: block;">
+      <span class="sa-body pulseWarningIns"></span>
+      <span class="sa-dot pulseWarningIns"></span>
+    </div>
+    <h2>微信号已经绑定</h2>
+  </div>
+  <% for (var i in
+      htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"  crossorigin="anonymous"></script>
+    <% } %>
+</body>
+
+</html>

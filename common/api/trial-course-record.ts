@@ -1,0 +1,35 @@
+import { TrialCoureseSignDto, TrialCourseRecord, TrialCourseSignVo } from '../const/type/trial-course-record'
+import { ApiListData, ApiResponse } from '../const/api'
+import http from '../utils/http'
+import { QueryCondition } from '../types/d/global'
+/**
+ * 添加课程包
+ * @param {*} params
+ */
+export function addTrialCourseRecord (params: TrialCourseRecord) {
+  return http.post('trial-course-record', params)
+}
+
+/**
+*
+* @param params 查询参数
+*/
+export function gettrialCclassRecordList (params: QueryCondition<TrialCourseRecord>): ApiListData<TrialCourseRecord> {
+  return http.post('trial-course-record/list', params)
+}
+
+/**
+*
+* @param id 课程包的id
+*/
+export function getTrialCourseRecord (id: string): ApiResponse<TrialCourseRecord> {
+  return http.get(`trial-course-record/${id}`)
+}
+
+export function sign (params: TrialCourseSignVo): ApiResponse<TrialCoureseSignDto> {
+  return http.post('trial-course-record/sign', params)
+}
+
+export function supplement (params: TrialCourseSignVo): ApiResponse<TrialCoureseSignDto> {
+  return http.post('trial-course-record/supplement', params)
+}
