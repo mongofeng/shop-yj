@@ -4,11 +4,15 @@ const router = {
   admin: {
     entry: path.resolve(__dirname, '../src/admin/main.ts'),
     html: {
+      filename: 'admin.html',
+      chunks: ['admin']
     }
   },
   teacher: {
     entry: path.resolve(__dirname, '../src/teacher/main.ts'),
     html: {
+      filename: 'teacher.html',
+      chunks: ['teacher']
     }
   }
 }
@@ -20,10 +24,7 @@ const html = []
 Object.keys(router).forEach((key) => {
   entry[key] = router[key].entry
 
-  html.push({
-    filename: key,
-    chunks: [key]
-  })
+  html.push(router[key].html)
 })
 
 exports.entry = entry

@@ -4,8 +4,8 @@ import '@root/common/assets/css/loading.css'
 import '@root/common/assets/css/reset.css'
 import { accessTokenName } from '@root/common/utils/http'
 import * as api from '@root/common/api/wechat'
-import { bindWechat, getteacherList } from '@root/common/api/teacher'
-import { ITeacher } from '@root/common/const/type/teacher'
+import { addAdminWechat, getAdminWechatList } from '@root/common/api/admin-wechat'
+import { IAdminWechat } from '@root/common/const/type/admin-wechat'
 
 const loadingDom = document.getElementById('loading') as HTMLElement
 const warnDom = document.getElementById('warn') as HTMLElement
@@ -69,35 +69,36 @@ async function fetchOpenId () {
   return true
 }
 
-async function bindTeacherWechat () {
-  const { data: { data: { list } } } = await getteacherList({
+// 绑定微信
+async function isBindWechat () {
+  const { data: { data: { count } } } = await getAdminWechatList({
     page: 1,
     limit: 50,
     query: {
-      _id: localStorage.getItem('state') || ''
+      _id: localStorage.getItem('openid') || ''
     }
   })
 
   // 判断是否正式的学生
-  if (!list || !list.length) {
-    console.warn('找不到老师账号')
-    showError('当前老师不存在, 请重新扫描二维码')
+  if (count > 0) {
+    console.warn('当前微信已经绑定')
+    showError('当前微信已经绑定')
     return
   }
+  // 获取微信信息
+  const { data } = await api.fetchUserInfo({
+    openid: localStorage.getItem('openid') || ''
+  })
 
-  // 判断是否正式的学生
-  if (list && list.length && list[0].openId) {
-    console.warn('当前账号openid有绑定')
-    showError('当前老师已经绑定微信，请联系管理员')
-    return
-  }
+  const nickname = data.nickname || (data as any).data.nickname
 
-  const params: Partial<ITeacher> = {
+  const params: IAdminWechat = {
     id: localStorage.getItem('state') || '',
     _id: localStorage.getItem('state') || '',
+    name: nickname,
     openId: localStorage.getItem('openid') || ''
   }
-  await bindWechat(params)
+  await addAdminWechat(params)
   success()
 }
 
@@ -106,7 +107,7 @@ async function main () {
     const ret = await fetchOpenId()
     console.log(ret)
     if (ret) {
-      await bindTeacherWechat()
+      await isBindWechat()
     }
   } catch (error) {
     showError('网络错误')
