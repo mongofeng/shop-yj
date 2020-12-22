@@ -8,30 +8,30 @@
           </div>
           <div class="text">今天课时</div>
         </van-col>
-        <van-col span="8">
+        <!-- <van-col span="8">
           <div class="label">
             {{ month }}
           </div>
           <div class="text">本月课时</div>
-        </van-col>
-        <van-col span="8">
+        </van-col> -->
+        <!-- <van-col span="8">
           <div class="label">
             {{ all }}
           </div>
           <div class="text">总课时</div>
-        </van-col>
+        </van-col> -->
       </van-row>
     </van-sticky>
     <van-tabs v-model:active="active">
       <van-tab title="今天">
         <TrialStudentRecordItem type="today"></TrialStudentRecordItem>
       </van-tab>
-      <van-tab title="本月">
+      <!-- <van-tab title="本月">
         <TrialStudentRecordItem type="month"></TrialStudentRecordItem>
-      </van-tab>
-      <van-tab title="全部">
+      </van-tab> -->
+      <!-- <van-tab title="全部">
         <TrialStudentRecordItem type="all"></TrialStudentRecordItem>
-      </van-tab>
+      </van-tab> -->
     </van-tabs>
   </div>
 </template>
