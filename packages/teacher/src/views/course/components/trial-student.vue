@@ -44,6 +44,7 @@
 
     <van-cell-group v-else>
       <van-cell
+      class="cell"
         :title="i.name"
         v-for="i of all.trialStudent"
         :key="i.id"
@@ -260,4 +261,9 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
+.cell {
+  height: 50px;
+  border: 1px solid #cccccc;
+  margin-bottom: 10px;
+}
 </style>

@@ -37,7 +37,7 @@
   <van-empty image="error" description="暂无数据"  v-if="!all.student.length"/>
 
   <van-cell-group v-else>
-    <van-cell :title="i.name"  v-for="i of all.student" :key="i.id" @click="showPopup(i.id)" is-link/>
+    <van-cell :title="i.name" class="cell"  v-for="i of all.student" :key="i.id" @click="showPopup(i.id)" is-link/>
   </van-cell-group>
  </div>
 </template>
@@ -238,5 +238,9 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-
+.cell {
+  height: 50px;
+  border: 1px solid #cccccc;
+  margin-bottom: 10px;
+}
 </style>

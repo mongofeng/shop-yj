@@ -1,56 +1,78 @@
 <template>
   <div>
-    <!-- <img class="user-poster" src="https://img.yzcdn.cn/public_files/2017/10/23/8690bb321356070e0b8c4404d087f8fd.png"> -->
-    <!-- <van-row class="user-links">
-      <van-col span="6">
-        <van-icon name="pending-payment" />
-        待付款
-      </van-col>
-      <van-col span="6">
-        <van-icon name="records" />
-        待接单
-      </van-col>
-      <van-col span="6">
-        <van-icon name="tosend" />
-        待发货
-      </van-col>
-      <van-col span="6">
-        <van-icon name="logistics" />
-        已发货
-      </van-col>
-    </van-row> -->
+    <van-sticky>
+      <van-row>
+        <van-col span="12">
+          <div class="label">
+            {{ today }}
+          </div>
+          <div class="text">今天课时</div>
+        </van-col>
+        <van-col span="12">
+          <div class="label">
+            {{ trial.today }}
+          </div>
+          <div class="text">今天试课课时</div>
+        </van-col>
+        <!-- <van-col span="8">
+          <div class="label">
+            {{ all }}
+          </div>
+          <div class="text">总课时</div>
+        </van-col> -->
+      </van-row>
+    </van-sticky>
 
-    <!-- <van-cell-group class="user-group">
-      <van-cell icon="records" title="全部订单" is-link />
-    </van-cell-group> -->
-
-    <van-cell-group>
-      <van-cell icon="points" title="学生课时" is-link  to="/student-record"/>
-      <van-cell icon="gold-coin-o" title="试课学生课时" is-link to="/trial-student-record"/>
-      <!-- <van-cell icon="gift-o" title="我收到的礼物" is-link /> -->
-    </van-cell-group>
+    <van-tabs v-model:active="active">
+      <van-tab title="今天">
+        <StudentRecordItem type="today"></StudentRecordItem>
+      </van-tab>
+      <van-tab title="今天试课">
+        <TrialStudentRecordItem type="today"></TrialStudentRecordItem>
+      </van-tab>
+      <!-- <van-tab title="全部">
+        <StudentRecordItem type="all"></StudentRecordItem>
+      </van-tab> -->
+    </van-tabs>
   </div>
 </template>
-
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { Row, Col, Icon, Cell, CellGroup } from 'vant'
+import { Col, Row, Sticky, Tab, Tabs } from 'vant'
+import { defineComponent, ref, toRefs } from 'vue'
+import { getStatistics } from '../record/composition/stactics'
+import StudentRecordItem from '../record/student/components/student.vue'
+import TrialStudentRecordItem from '../record/trial-student/components/trial-student.vue'
 export default defineComponent({
-  name: 'User',
-  components: {
-    [Row.name]: Row,
-    [Col.name]: Col,
-    [Icon.name]: Icon,
-    [Cell.name]: Cell,
-    [CellGroup.name]: CellGroup
-  },
-  setup (props) {
-    console.log(props) // { user: '' }
+  name: 'StudentRecord',
 
-    return {} // 这里返回的任何内容都可以用于组件的其余部分
+  components: {
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Col.name]: Col,
+    [Row.name]: Row,
+    [Sticky.name]: Sticky,
+    TrialStudentRecordItem: TrialStudentRecordItem,
+    StudentRecordItem: StudentRecordItem
+  },
+
+  setup () {
+    const active = ref(1) // 2020-12
+
+    const { statistics } = getStatistics('course-hour-flow')
+    const { statistics: trial } = getStatistics('trial_course_record')
+
+    return { active, ...toRefs(statistics), trial }
   }
 })
 </script>
 <style lang="scss" scoped>
-
+.label {
+  font-size: 20px;
+  text-align: center;
+  padding-top: 10px;
+}
+.text {
+  font-size: 13px;
+  text-align: center;
+}
 </style>

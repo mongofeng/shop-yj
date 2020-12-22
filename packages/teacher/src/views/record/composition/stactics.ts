@@ -100,8 +100,8 @@ export function getStatistics (collectionName: string) {
 
   onMounted(() => {
     getTodayData()
-    getMonthData()
-    getAllData()
+    // getMonthData()
+    // getAllData()
   })
 
   return {
