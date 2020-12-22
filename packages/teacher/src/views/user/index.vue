@@ -56,7 +56,7 @@ export default defineComponent({
   },
 
   setup () {
-    const active = ref(1) // 2020-12
+    const active = ref(0) // 2020-12
 
     const { statistics } = getStatistics('course-hour-flow')
     const { statistics: trial } = getStatistics('trial_course_record')
