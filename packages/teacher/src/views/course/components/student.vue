@@ -101,6 +101,7 @@ export default defineComponent({
     const currentId = ref('')
     const store = useStore()
     const teacherId = store.state.oauth.userid
+    const openId = store.state.oauth.openid
 
     const data = reactive({
       num: 0,
@@ -135,7 +136,7 @@ export default defineComponent({
     async function onSubmit (values: { num: number; desc: string }) {
       const params: ISign = {
         courseName: props.courseName,
-        desc: values.desc,
+        desc: values.desc + openId,
         num: values.num,
         studentId: currentId.value,
         teacherId: teacherId,
@@ -239,8 +240,8 @@ export default defineComponent({
 </script>
 <style lang="scss" scoped>
 .cell {
-  height: 50px;
-  border: 1px solid #cccccc;
+  height: 100px;
+  border-bottom: 1px solid #262626;
   margin-bottom: 10px;
 }
 </style>
