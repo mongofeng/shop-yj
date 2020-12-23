@@ -96,6 +96,8 @@ export default defineComponent({
       student: []
     })
 
+    const studentMap = new Map()
+
     const show = ref(false)
     const loading = ref(false)
     const currentId = ref('')
@@ -134,6 +136,11 @@ export default defineComponent({
     }
 
     async function onSubmit (values: { num: number; desc: string }) {
+      const studentName = studentMap.get(currentId.value)
+      await Dialog.confirm({
+        title: `${props.courseName}课程签到`,
+        message: `${studentName}: ${values.num}课时`
+      })
       const params: ISign = {
         courseName: props.courseName,
         desc: values.desc + openId,
@@ -216,6 +223,10 @@ export default defineComponent({
         sort: {
           createDate: -1
         }
+      })
+
+      list.forEach(i => {
+        studentMap.set(i._id, i.name)
       })
 
       all.student = list
