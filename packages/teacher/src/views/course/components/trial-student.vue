@@ -234,21 +234,23 @@ export default defineComponent({
     }
 
     // fetch the user information when params change
-    // watch(
-    //   () => props.ids,
-    //   async (newParams: any) => {
-    //     return fetchTrialStudent(newParams.ids)
-    //   },
-    //   {
-    //     immediate: true
-    //   }
-    // )
-
-    onMounted(() => {
-      if (props.ids) {
-        fetchTrialStudent(props.ids as string[])
+    watch(
+      () => props.ids,
+      () => {
+        if (props.ids) {
+          fetchTrialStudent(props.ids as string[])
+        }
+      },
+      {
+        immediate: true
       }
-    })
+    )
+
+    // onMounted(() => {
+    //   if (props.ids) {
+    //     fetchTrialStudent(props.ids as string[])
+    //   }
+    // })
 
     return {
       ...toRefs(data),
@@ -264,7 +266,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .cell {
   height: 100px;
-  border-bottom: 1px solid #262626;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04);
   margin-bottom: 10px;
 }
 </style>

@@ -56,7 +56,7 @@ export default defineComponent({
 
     const loading = ref(false)
 
-    const active = ref(1)
+    const active = ref(0)
 
     const course = reactive({
       name: '',

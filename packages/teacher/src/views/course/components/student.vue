@@ -221,11 +221,24 @@ export default defineComponent({
       all.student = list
     }
 
-    onMounted(() => {
-      if (props.ids) {
-        fetchStudent(props.ids as string[])
+    // fetch the user information when params change
+    watch(
+      () => props.ids,
+      () => {
+        if (props.ids) {
+          fetchStudent(props.ids as string[])
+        }
+      },
+      {
+        immediate: true
       }
-    })
+    )
+
+    // onMounted(() => {
+    //   if (props.ids) {
+    //     fetchStudent(props.ids as string[])
+    //   }
+    // })
 
     return {
       ...toRefs(data),
@@ -241,7 +254,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .cell {
   height: 100px;
-  border-bottom: 1px solid #262626;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04);
   margin-bottom: 10px;
 }
 </style>
